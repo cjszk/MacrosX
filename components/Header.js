@@ -1,18 +1,38 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { toggleHomeView } from '../actions/appState';
 
 class Header extends React.Component {
+  
+  renderMenu() {
+    return (
+      <View>
+        <Text style={styles.menuBar}></Text>
+        <Text style={styles.menuBar}></Text>
+        <Text style={styles.menuBar}></Text>
+      </View>);
+  }
+  
   render() {
     return (
       <View style={styles.main}>
         <TouchableOpacity>
-          <Text style={styles.homeBtn}>(Menu)</Text>
+          {this.renderMenu()}
         </TouchableOpacity>
         <Text style={styles.header}>MacrosX</Text>
         <TouchableOpacity onPress={() => this.props.dispatch(toggleHomeView())}>
-          <Text style={styles.homeBtn}>(Home)</Text>
+        <View
+          style={styles.homeBtn}
+          >
+          <Icon
+            name='home'
+            type='font-awesome'
+            color='black'
+            size={50}
+          />
+        </View>
         </TouchableOpacity>
       </View>
     );
@@ -21,19 +41,27 @@ class Header extends React.Component {
 
 
 const styles = StyleSheet.create({
+  menuBar: {
+    width: 50,
+    height: 5,
+    backgroundColor: 'black',
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 15,
+  },
   main: {
-    backgroundColor: '#000',
-    paddingTop: '10%',
-    paddingBottom: '5%',
+    backgroundColor: '#4C9FFE',
+    paddingTop: 40,
+    paddingBottom: 10,
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
   homeBtn: {
-    color: '#fff',
+    marginRight: 15,
   },
   header: {
-    color: '#fff',
+    color: 'black',
     fontSize: 32,
   }
 });
