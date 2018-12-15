@@ -13,15 +13,6 @@ class MainTracker extends React.Component {
     }
   }
 
-  createColorBar(total, goal, color) {
-    return StyleSheet.create({
-      colorBar: {
-        width: String(total/goal) + '%',
-        backgroundColor: color,
-      }
-    })
-  }
-
   decrementDate() {
     this.props.dispatch(decrementDate());
   }
@@ -39,13 +30,26 @@ class MainTracker extends React.Component {
       fiber += item.fiber * item.servings;
       sugar += item.sugar * item.servings;
     });
-    return { protein, carbs, fat, fiber, sugar };
+
+    const calories = (protein * 4) + (carbs * 4) + (fat * 9);
+
+    return { protein, carbs, fat, fiber, sugar, calories };
+  }
+
+  createColorBar(percent, color) {
+    let backgroundColor = color;
+    let width = String(percent * 100) + '%';
+    if (percent >= 1) {
+      backgroundColor = 'red';
+      width = '100%';
+    };
+    return (<Text style={{height: '100%', width, position: 'absolute', left: 0, top: 0, backgroundColor}}></Text>);
   }
 
   render() {
     const { date, dailyData } = this.props;
     const dailyMacros = this.calculateMacros(dailyData);
-
+    
     return (
       <View style={styles.mainContainer}>
         <View style={styles.date}>
@@ -53,7 +57,7 @@ class MainTracker extends React.Component {
             <Icon
               name="chevron-left"
               type="fontawesome"
-              size={40}
+              size={60}
             />
           </TouchableOpacity>
           <Text style={styles.dateText}>{moment(date).format("MMM DD, YYYY")}</Text>
@@ -61,24 +65,32 @@ class MainTracker extends React.Component {
             <Icon
               name="chevron-right"
               type="fontawesome"
-              size={40}
+              size={60}
             />
           </TouchableOpacity>
         </View>
         <View style={styles.macrosContainer}>
           <View style={styles.protein}>
+              {this.createColorBar((dailyMacros.protein/testSettings.protein), 'skyblue')}
               <Text style={styles.macroHeader}>Protein</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.protein)}/{testSettings.protein}</Text>
           </View>
           <View style={styles.carbs}>
+              {this.createColorBar((dailyMacros.carbs/testSettings.carbs), 'orange')}
               <Text style={styles.macroHeader}>Carbs</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.carbs)}/{testSettings.carbs}</Text>
           </View>
           <View style={styles.fat}>
+              {this.createColorBar((dailyMacros.fat/testSettings.fat), 'yellow')}
               <Text style={styles.macroHeader}>Fat</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.fat)}/{testSettings.fat}</Text>
           </View>
         </View>
+        <View style={styles.calories}>
+              {this.createColorBar((dailyMacros.calories/testSettings.calories), 'limegreen')}
+              <Text style={styles.macroHeader}>Calories</Text>
+              <Text style={styles.macroInt}>{Math.round(dailyMacros.calories)}/{testSettings.calories}</Text>
+          </View>
       </View>
     );
   }
@@ -97,6 +109,7 @@ const testSettings = {
   protein: 180,
   carbs: 180,
   fat: 48,
+  calories: 1872
 }
 
 const styles = StyleSheet.create({
@@ -110,16 +123,17 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   dateText: {
-    marginTop: 5,
-    fontSize: 24,
+    alignSelf: 'center',
+    fontSize: 32,
   },
   macrosContainer: {
     display: 'flex',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     flexDirection: 'row',
   },
   macroHeader: {
     textAlign: 'center',
+    alignSelf: 'center',
     fontSize: 12
   },
   macroInt: {
@@ -127,28 +141,44 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   protein: {
-    backgroundColor: 'skyblue',
-    padding: 15,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
     width: 100,
+    height: 50,
     borderRadius: 4,
     borderWidth: 0.5,
     borderColor: '#000',
   },
   carbs: {
-    backgroundColor: 'orange',
-    padding: 15,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
     width: 100,
+    height: 50,
     borderRadius: 4,
     borderWidth: 0.5,
     borderColor: '#000',
   },
   fat: {
-    backgroundColor: 'yellow',
-    padding: 15,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
     width: 100,
+    height: 50,
     borderRadius: 4,
     borderWidth: 0.5,
     borderColor: '#000',
+  },
+  calories: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: 50,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: '#000',
+    marginTop: 20,
   }
 });
 

@@ -2,28 +2,38 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { toggleQuickAdd } from '../actions/appState';
+import { toggleQuickAdd, toggleHomeView } from '../actions/appState';
 
 class Footer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: [{
+            items: [
+            {
+                name: 'Home',
+                icon: 'home',
+                type: 'font-awesome',
+                action: () => this.props.dispatch(toggleHomeView()),
+            },
+            {
                 name: 'Quick Add',
                 icon: 'add',
                 type: 'MaterialIcons',
                 action: () => this.props.dispatch(toggleQuickAdd()),
-            }, {
+            },
+            {
                 name: 'Library',
                 icon: 'local-library',
                 type: 'MaterialIcons',
                 action: () => console.log('not yet added'),
-            }, {
+            },
+            {
                 name: 'Graphs',
-                icon: 'add',
-                type: 'MaterialIcons',
+                icon: 'line-graph',
+                type: 'entypo',
                 action: () => console.log('not yet added'),
-            },],
+            },
+            ],
         }
     }
 
@@ -32,7 +42,7 @@ class Footer extends React.Component {
         return items.map((item) => {
             return (
                 <TouchableOpacity style={styles.item} key={item.name} onPress={() => item.action()}>
-                    <Icon style={styles.itemIcon} name={item.icon} type={item.type} color='#fff'/>
+                    <Icon style={styles.itemIcon} name={item.icon} type={item.type} size={35} color='#fff'/>
                     <Text style={styles.itemText}>{item.name}</Text>                    
                 </TouchableOpacity>
             );

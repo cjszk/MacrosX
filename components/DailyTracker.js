@@ -9,7 +9,7 @@ class DailyTracker extends React.Component {
     render() {
         const { dailyData } = this.props;
         let renderItems = dailyData.sort((a, b) => {
-            return moment(a.date).format('e') - moment(b.date).format('e')
+            return moment(a.date).format('x') - moment(b.date).format('x')
         }).map((item, index) => <DailyTrackerItem data={item} key={index}/>);
 
         return (
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     main: {
         borderWidth: .5,
         borderColor: 'black',
-        height: '60%',
+        height: '37.5%',
         overflow: 'scroll'
     }
 });

@@ -5,34 +5,26 @@ import { Icon } from 'react-native-elements';
 import { toggleHomeView } from '../actions/appState';
 
 class Header extends React.Component {
-  
-  renderMenu() {
-    return (
-      <View>
-        <Text style={styles.menuBar}></Text>
-        <Text style={styles.menuBar}></Text>
-        <Text style={styles.menuBar}></Text>
-      </View>);
-  }
-  
+
   render() {
     return (
       <View style={styles.main}>
         <TouchableOpacity>
-          {this.renderMenu()}
+          <Icon
+            name='cog'
+            type='font-awesome'
+            color='#000'
+            size={50}
+          />
         </TouchableOpacity>
         <Text style={styles.header}>MacrosX</Text>
         <TouchableOpacity onPress={() => this.props.dispatch(toggleHomeView())}>
-        <View
-          style={styles.homeBtn}
-          >
           <Icon
             name='home'
             type='font-awesome'
-            color='black'
+            color='#000'
             size={50}
           />
-        </View>
         </TouchableOpacity>
       </View>
     );
@@ -45,6 +37,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#4C9FFE',
     paddingTop: 40,
     paddingBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',

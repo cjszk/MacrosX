@@ -26,7 +26,7 @@ const data = {
     }],
     entries: [
         {
-            date: moment(),
+            date: 1544852141637,
             name: 'Pasta',
             protein: 5,
             carbs: 42,
@@ -34,10 +34,10 @@ const data = {
             fiber: 0,
             sugar: 0,
             servings: 1.5,
-            measurement: 'grams'
+            measurement: 'grams',
         },
         {
-            date: moment(),
+            date: 1544852141638,
             name: 'Whey Protein',
             protein: 30,
             carbs: 1,
@@ -48,7 +48,7 @@ const data = {
             measurement: 'grams'
         },
         {
-            date: moment(),
+            date: 1544852141639,
             name: 'Banana',
             protein: 2,
             carbs: 42,
@@ -59,7 +59,7 @@ const data = {
             measurement: 'grams',
         },
         {
-            date: moment(),
+            date: 1544852141640,
             name: 'Almonds',
             protein: 5,
             carbs: 8,
@@ -70,18 +70,7 @@ const data = {
             measurement: 'grams'
         },
         {
-            date: moment(),
-            name: 'Banana',
-            protein: 2,
-            carbs: 42,
-            fat: 2,
-            fiber: 0,
-            sugar: 0,
-            servings: 1.0,
-            measurement: 'grams',
-        },
-        {
-            date: moment(),
+            date: 1544852141642,
             name: 'Almonds',
             protein: 5,
             carbs: 8,
@@ -92,7 +81,7 @@ const data = {
             measurement: 'grams'
         },
         {
-            date: moment(),
+            date: 1544852141643,
             name: 'Banana',
             protein: 2,
             carbs: 42,
@@ -100,17 +89,6 @@ const data = {
             fiber: 0,
             sugar: 0,
             servings: 1.0,
-            measurement: 'grams'
-        },
-        {
-            date: moment(),
-            name: 'Almonds',
-            protein: 5,
-            carbs: 8,
-            fat: 11,
-            fiber: 0,
-            sugar: 0,
-            servings: 1,
             measurement: 'grams'
         },
     ],

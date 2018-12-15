@@ -16,7 +16,7 @@ class QuickAdd extends React.Component {
             fat: 0,
             fiber: 0,
             sugar: 0,
-            servings: 0,
+            servings: 1,
             measurement: '',
             toggleTimePicker: false,
             date: moment(),
@@ -51,15 +51,18 @@ class QuickAdd extends React.Component {
     }
 
     handleSubmit = async () => {
-        let { name } = this.state;
-        if (!name.length) name = 'Quick Add';
-        const { protein, carbs, fat, fiber, sugar, date, servings, measurement } = this.state;
+        let { name, measurement } = this.state;
+        if (!name.length) name = 'Quick Add: ' + String(moment().format('hh:ss a'));
+        if (!measurement.length) measurement = 'servings';
+        const { protein, carbs, fat, fiber, sugar, date, servings } = this.state;
         const { data } = this.props;
-        const newEntry = { name, protein, carbs, fat, fiber, sugar, date, servings, measurement };
+        const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement };
         const newEntries = data.entries.slice()
         newEntries.push(newEntry);
         let newData = data;
         newData.entries = newEntries;
+        newData.date = moment(date).format('x');
+        console.log(newEntry);
         try {
           await AsyncStorage.setItem('data', JSON.stringify(newData));
           this.props.dispatch(toggleHomeView())
@@ -84,7 +87,7 @@ class QuickAdd extends React.Component {
                         <TextInput
                             onChangeText={(e) => this.setState({name: e})}
                             style={styles.nameInput}
-                            placeholder="Name"
+                            placeholder="Name (optional for Quick Add)"
                         />
                     </View>
                     <View style={styles.nameView}>
@@ -122,7 +125,7 @@ class QuickAdd extends React.Component {
                     <TextInput
                         value={measurement.toLowerCase()}
                         style={styles.servingsMeasurementInput}
-                        placeholder="grams"
+                        placeholder="(optional)"
                         onChangeText={(m) => this.setState({measurement: m})}
                     />
                 </View>

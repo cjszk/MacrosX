@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Text, View } from 'react-native';
+import { Icon } from 'react-native-elements';
 
 class DailyTrackerItem extends React.Component {
 
@@ -9,11 +10,11 @@ class DailyTrackerItem extends React.Component {
 
         return (
             <View style={[styles.flexRow, styles.main]}>
-                <View style={styles.flexColumn}>
+                <View style={styles.name}>
                     <Text style={styles.textName}>{data.name}</Text>
                     <Text style={styles.textServings}>{data.servings} {data.measurement}</Text>
                 </View>
-                <View style={styles.flexRow}>
+                <View style={[styles.flexRow, styles.macros]}>
                     <Text style={[styles.macronutrient, {
                         backgroundColor: 'skyblue',
                     }]}>{data.protein * data.servings}g</Text>
@@ -24,6 +25,13 @@ class DailyTrackerItem extends React.Component {
                         backgroundColor: 'yellow',
                     }]}>{data.fat * data.servings}g</Text>
                 </View>
+                <View style={styles.icons}>
+                    <Icon
+                        name="edit"
+                        type="antdesign"
+                        size={35}
+                    />
+                </View>
             </View>
         );
     }
@@ -31,7 +39,7 @@ class DailyTrackerItem extends React.Component {
 
 const styles = {
     main: {
-        backgroundColor: 'limegreen',
+        // backgroundColor: 'limegreen',
         borderWidth: 0.5,
         borderColor: 'black',
     },
@@ -40,17 +48,19 @@ const styles = {
         justifyContent: 'space-between',
         flexDirection: 'row',
     },
-    flexColumn: {
+    name: {
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'column',
+        width: '40%',
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 5,
     },
     textName: {
-        fontSize: 18,
+        fontSize: 16,
         marginBottom: 2,
         marginTop: 2,
-        marginLeft: 5,
-        marginRight: 5,
     },
     textServings: {
         marginBottom: 2,
@@ -58,14 +68,22 @@ const styles = {
         marginLeft: 5,
         marginRight: 5,
     },
+    macros: {
+        justifyContent: 'center',
+        alignContent: 'center',
+        width: '15%',
+    },
     macronutrient: {
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingLeft: 5,
-        paddingRight: 5,
+        paddingTop: '25%',
         width: 50,
         height: '100%',
         textAlign: 'center',
+        alignSelf: 'center',
+    },
+    icons: {
+        display: 'flex',
+        flexDirection: 'row',
+        marginRight: 10,
     }
 }
 
