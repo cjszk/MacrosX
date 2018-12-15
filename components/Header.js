@@ -41,14 +41,6 @@ class Header extends React.Component {
 
 
 const styles = StyleSheet.create({
-  menuBar: {
-    width: 50,
-    height: 5,
-    backgroundColor: 'black',
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 15,
-  },
   main: {
     backgroundColor: '#4C9FFE',
     paddingTop: 40,
@@ -56,6 +48,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
+    height: '11%',
+  },
+  menuBar: {
+    width: 50,
+    height: 5,
+    backgroundColor: 'black',
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 15,
   },
   homeBtn: {
     marginRight: 15,

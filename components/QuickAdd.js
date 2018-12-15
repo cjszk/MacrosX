@@ -1,20 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { AsyncStorage, StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { Icon } from 'react-native-elements';
 import moment from 'moment';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { toggleHomeView } from '../actions/appState';
 
 class QuickAdd extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             name: '',
-            protein: '0',
-            carbs: '0',
-            fat: '0',
-            fiber: '0',
-            sugar: '0',
+            protein: 0,
+            carbs: 0,
+            fat: 0,
+            fiber: 0,
+            sugar: 0,
+            servings: 0,
+            measurement: '',
             toggleTimePicker: false,
             date: moment(),
         }
@@ -25,99 +28,106 @@ class QuickAdd extends React.Component {
     hideDateTimePicker = () => this.setState({ toggleTimePicker: false });
   
     handleDatePicked = (date) => {
-        this.setState({date})
+        this.setState({date: moment(date).format()})
         this.hideDateTimePicker();
     };
 
-    renderMacro(macro, key, backgroundColor) {
-        if (!backgroundColor) backgroundColor = 'none';
+    renderNutrient(macro, key) {
         const title = key.split('')[0].toUpperCase() + key.split('').slice(1).join('');
+        const macroValue = this.state[key];
         return (
-        <View style={[styles.macroContainer, {
-            backgroundColor
-        }]}>
-            <Text style={styles.macroLabel}>{title}</Text>
-            <View style={styles.macroInputView}>
-                <TouchableOpacity
-                    onPress={() => {
-                    if (parseInt(macro) > 0) this.setState({[key]: String(parseInt(macro) - 1)})}}
-                    style={styles.macroInputArrow}>
-                    <Icon size={40} name='minus' type='entypo'/>
-                </TouchableOpacity>
-                <TextInput
-                    value={macro}
-                    style={styles.macroInput}
-                    keyboardType='numeric'
-                    onChangeText={(n) => this.setState({[key]: n})}    
-                />
-                <TouchableOpacity
-                    onPress={() => this.setState({[key]: String(parseInt(macro) + 1)})}
-                    style={styles.macroInputArrow}>
-                    <Icon size={40} name='plus' type='entypo'/>
-                </TouchableOpacity>
-            </View>
+        <View style={styles.macro}>
+            <Text style={styles.macroText}>{title}</Text>
+            <TextInput
+                value={String(macroValue)}
+                style={styles.macroInput}
+                keyboardType='numeric'
+                onChangeText={(n) => {
+                    if (!n.length) this.setState({[key]: 0})
+                    else this.setState({[key]: parseInt(n)})
+                }}/>
         </View>
         )
     }
 
-    renderMisc(misc, key) {
-        return (
-        <View style={styles.extraContainer}>
-            <Text style={styles.extraLabel}>Fiber</Text>
-            <Text style={styles.optional}>(optional)</Text>
-            <View style={styles.extraInputView}>
-                <TouchableOpacity
-                    onPress={() => {
-                    if (parseInt(misc) > 0) this.setState({[key]: String(parseInt(misc) - 1)})}}
-                style={styles.extraInputArrow}>
-                    <Icon size={40} name='minus' type='entypo'/>
-                </TouchableOpacity>
-                <TextInput
-                    value={misc}
-                    style={styles.extraInput}
-                    keyboardType='numeric'
-                    onChangeText={(n) => this.setState({[key]: n})} />
-                <TouchableOpacity
-                    onPress={() => this.setState({[key]: String(parseInt(misc) + 1)})}
-                    style={styles.extraInputArrow}>
-                    <Icon size={40} name='plus' type='entypo'/>
-                </TouchableOpacity>
-            </View>
-        </View>
-        )
+    handleSubmit = async () => {
+        let { name } = this.state;
+        if (!name.length) name = 'Quick Add';
+        const { protein, carbs, fat, fiber, sugar, date, servings, measurement } = this.state;
+        const { data } = this.props;
+        const newEntry = { name, protein, carbs, fat, fiber, sugar, date, servings, measurement };
+        const newEntries = data.entries.slice()
+        newEntries.push(newEntry);
+        let newData = data;
+        newData.entries = newEntries;
+        try {
+          await AsyncStorage.setItem('data', JSON.stringify(newData));
+          this.props.dispatch(toggleHomeView())
+        } catch (error) {
+          console.error(error);
+        }
     }
 
     render() {
-        const { name, protein, carbs, fat, fiber, sugar, date } = this.state;
+        const { name, protein, carbs, fat, fiber, sugar, date, servings, measurement } = this.state;
         return (
             <View style={styles.main}>
                 <DateTimePicker
                     isVisible={this.state.toggleTimePicker}
                     onConfirm={this.handleDatePicked}
                     onCancel={this.hideDateTimePicker}
-                    />
-
-                <Text style={styles.header}>Quick Add</Text>
-                <View style={styles.nameView}>
+                />
+                <View style={styles.mainContainer}>
+                    <Text style={styles.header}>Quick Add</Text>
+                    <View style={styles.nameView}>
+                        <Text style={styles.nameText}>Name: </Text>
+                        <TextInput
+                            onChangeText={(e) => this.setState({name: e})}
+                            style={styles.nameInput}
+                            placeholder="Name"
+                        />
+                    </View>
+                    <View style={styles.nameView}>
+                        <Text style={styles.nameText}>Date: </Text>
+                        <TouchableOpacity style={styles.datePicker} onPress={() => this.showDateTimePicker()}>
+                            <Text>{moment(date).format('MMM DD, YYYY')}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.nutrientsContainer}>
+                    <View style={styles.macroContainer}>
+                        {this.renderNutrient(protein, 'protein')}
+                        {this.renderNutrient(carbs, 'carbs')}
+                        {this.renderNutrient(fat, 'fat')}
+                    </View>
+                    <View style={styles.miscContainer}>
+                        {this.renderNutrient(fiber, 'fiber')}
+                        {this.renderNutrient(sugar, 'sugar')}
+                    </View>
+                </View>
+                <View style={styles.servingsContainer}>
+                    <Text style={styles.servingsText}>Servings: </Text>
                     <TextInput
-                    style={styles.nameInput}
-                    placeholder='Name (of food)'
-                    value={name}
-                    onChangeText={(name) => this.setState({name})}
+                        style={styles.servingsNumberInput}
+                        value={String(servings)}
+                        keyboardType='numeric'
+                        onChangeText={(s) => {
+                            if (!s.length) this.setState({servings: 0})
+                            else {
+                                const value = parseInt(s);
+                                this.setState({servings: value})
+                            }
+                        }}
+                    />
+                    <TextInput
+                        value={measurement.toLowerCase()}
+                        style={styles.servingsMeasurementInput}
+                        placeholder="grams"
+                        onChangeText={(m) => this.setState({measurement: m})}
                     />
                 </View>
-                <TouchableOpacity onPress={() => this.showDateTimePicker()}>
-                    <Text style={styles.datePicker}>{moment(date).format('MMM DD, YYYY')}</Text>
-                </TouchableOpacity>
-                {this.renderMacro(protein, 'protein', 'skyblue')}
-                {this.renderMacro(carbs, 'carbs', 'orange')}
-                {this.renderMacro(fat, 'fat', 'yellow')}
-                <View style={styles.extra}>
-                    {this.renderMisc(fiber, 'fiber')}
-                    {this.renderMisc(sugar, 'sugar')}
-                </View>
-                <TouchableOpacity>
-                    <Text style={styles.submit}>Enter</Text>
+                <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit()}>
+                    <Text style={styles.submitText}>Enter</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -125,134 +135,147 @@ class QuickAdd extends React.Component {
 }
 const styles = {
     main: {
-        marginTop: 20,
+        height: '78%',
+    },
+    mainContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        marginLeft: '10%',
+        marginRight: '10%',
+        marginTop: 10,
+        padding: 10,
+        height: '30%'
     },
     header: {
-        marginBottom: 20,
-        marginLeft: 20,
         fontSize: 32,
+        alignSelf: 'center'
     },
     nameView: {
-
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        alignSelf: 'left',  
     },
     nameText: {
         fontSize: 18,
+        padding: 10,
+        width: '30%'
     },
     nameInput: {
-        padding: 5,
-        width: 220,
-        height: 50,
+        borderRadius: 4,
+        borderWidth: 0.5,
+        borderColor: '#000',
+        padding: 10,
+        marginTop: 10,
+        width: '70%'
+    },
+    datePicker: {
+        borderRadius: 4,
+        borderWidth: 0.5,
+        borderColor: '#000',
+        padding: 10,
+        marginTop: 10,
+        width: '70%'
+    },
+    nutrientsContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        padding: 10,
+    },
+    macroContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10,
+    },
+    macro: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-around'
+    },
+    macroText: {
+        alignSelf: 'center',
+        marginTop: 10,
+    },
+    macroInput: {
+        alignSelf: 'center',
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: '#000',
         marginTop: 10,
-        marginLeft: 20,
-        // marginLeft: 'auto',
-        // marginRight: 'auto',
-        fontSize: 24,
-    },
-    datePicker: {
+        width: 60,
+        height: 40,
         textAlign: 'center',
-        fontSize: 24,
-        padding: 5,
-        marginTop: 20,
-        marginBottom: 20,
-        marginLeft: 20,
-        // marginLeft: 'auto',
-        // marginRight: 'auto',
+    },
+    miscContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginLeft: '16.67%',
+        marginRight: '16.67%',
+    },
+    servingsContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        padding: 10,
+    },
+    servingsText: {
+        fontSize: 18,
+        padding: 10,
+        alignSelf: 'center'
+    },
+    servingsNumberInput: {
+        alignSelf: 'center',
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: '#000',
-        width: 220,
-    },
-    macroLabel: {
-        fontSize: 24,
-        marginBottom: 10,
-    },
-    macroContainer: {
-        display: 'flex',
-        justifyContent: 'space-around',
-        flexDirection: 'column',
-        alignItems: 'center',
-        paddingTop: 10,
-        paddingBottom: 10,
-    },
-    macroInputView: {
-        display: 'flex',
-        flexDirection: 'row',
-    },
-    macroInputArrow: {
-        display: 'flex',
-        justifyContent: 'space-around',
-        flexDirection: 'row',
+        marginTop: 10,
+        marginLeft: 5,
+        marginRight: 5,
+        width: 60,
+        height: 40,
         textAlign: 'center',
 
     },
-    macroInput: {
-        width: 75,
-        textAlign: 'center',
-        fontSize: 24,
-        marginTop: 'auto',
-        marginBottom: 'auto',
-    },
-    extraLabel: {
-        fontSize: 24,
-        marginBottom: 10,
-    },
-    extra: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-    },
-    optional: {
-        fontSize: 12,
-    },
-    extraContainer: {
-        display: 'flex',
-        justifyContent: 'space-around',
-        flexDirection: 'column',
-        alignItems: 'center',
+    servingsMeasurementInput: {
+        alignSelf: 'center',
+        borderRadius: 4,
+        borderWidth: 0.5,
+        borderColor: '#000',
         paddingTop: 10,
         paddingBottom: 10,
-    },
-    extraInputView: {
-        display: 'flex',
-        flexDirection: 'row',
-    },
-    extraInputArrow: {
-        display: 'flex',
-        justifyContent: 'space-around',
-        flexDirection: 'row',
-        textAlign: 'center',
-
-    },
-    extraInput: {
-        width: 75,
-        textAlign: 'center',
-        fontSize: 24,
-        marginTop: 'auto',
-        marginBottom: 'auto',
+        paddingRight: 20,
+        paddingLeft: 20,
+        marginTop: 10,
+        marginLeft: 5,
+        marginRight: 5,
+        width: 120,
     },
     submit: {
-        marginTop: 30,
         marginLeft: 'auto',
         marginRight: 'auto',
-        textAlign: 'center',
-        fontSize: 24,
-        backgroundColor: '#aaa',
+        marginTop: 60,
         padding: 20,
-        width: 300,
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: '#000',
+        width: '50%'
     },
-    
+    submitText: {
+        textAlign: 'center',
+        fontSize: 18
+    }
 }
 
 const mapStateToProps = state => {
     return {
         quickAdd: state.appState.quickAdd,
         date: state.appState.date,
+        data: state.dataReducer.data
     }
 }
 

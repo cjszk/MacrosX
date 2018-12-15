@@ -1,38 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, ScrollView, View } from 'react-native';
 import DailyTrackerItem from './DailyTrackerItem';
+import moment from 'moment';
 
 class DailyTracker extends React.Component {
 
     render() {
-
-        let test = [{
-            id: 1,
-            name: 'Pasta',
-            date: 'Dec 28, 2018',
-            protein: 18,
-            carbs: 72,
-            fat: 15,
-        }]
-
-        let renderItems = test.map((item) => <DailyTrackerItem data={item} key={item.id}/>);
+        const { dailyData } = this.props;
+        let renderItems = dailyData.sort((a, b) => {
+            return moment(a.date).format('e') - moment(b.date).format('e')
+        }).map((item, index) => <DailyTrackerItem data={item} key={index}/>);
 
         return (
         <View style={styles.main}>
-            {renderItems}
+            <ScrollView>
+                {renderItems}
+            </ScrollView>
         </View>
         );
     }
 }
 
-const styles = {
+const styles = StyleSheet.create({
     main: {
         borderWidth: .5,
         borderColor: 'black',
-        height: 300,
+        height: '60%',
+        overflow: 'scroll'
     }
-}
+});
+
+console.log(StyleSheet.create)
 
 const mapStateToProps = state => {
     return {

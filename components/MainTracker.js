@@ -9,7 +9,7 @@ class MainTracker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedDate: moment().format("MM-DD-YYYY")
+      filteredItems: []
     }
   }
 
@@ -21,8 +21,7 @@ class MainTracker extends React.Component {
       }
     })
   }
-  //, this.createColorBar(17, 180, 'skyblue').colorBar
-  
+
   decrementDate() {
     this.props.dispatch(decrementDate());
   }
@@ -31,8 +30,22 @@ class MainTracker extends React.Component {
     this.props.dispatch(incrementDate());
   }
 
+  calculateMacros(data) {
+    let protein = 0, carbs = 0, fat = 0, fiber = 0, sugar = 0;
+    if (data.length > 0) data.forEach((item) => {
+      protein += item.protein * item.servings;
+      carbs += item.carbs * item.servings;
+      fat += item.fat * item.servings;
+      fiber += item.fiber * item.servings;
+      sugar += item.sugar * item.servings;
+    });
+    return { protein, carbs, fat, fiber, sugar };
+  }
+
   render() {
-    const { date } = this.props;
+    const { date, dailyData } = this.props;
+    const dailyMacros = this.calculateMacros(dailyData);
+
     return (
       <View style={styles.mainContainer}>
         <View style={styles.date}>
@@ -55,15 +68,15 @@ class MainTracker extends React.Component {
         <View style={styles.macrosContainer}>
           <View style={styles.protein}>
               <Text style={styles.macroHeader}>Protein</Text>
-              <Text style={styles.macroInt}>{test.protein}/{testSettings.protein}</Text>
+              <Text style={styles.macroInt}>{Math.round(dailyMacros.protein)}/{testSettings.protein}</Text>
           </View>
           <View style={styles.carbs}>
               <Text style={styles.macroHeader}>Carbs</Text>
-              <Text style={styles.macroInt}>{test.carbs}/{testSettings.carbs}</Text>
+              <Text style={styles.macroInt}>{Math.round(dailyMacros.carbs)}/{testSettings.carbs}</Text>
           </View>
           <View style={styles.fat}>
               <Text style={styles.macroHeader}>Fat</Text>
-              <Text style={styles.macroInt}>{test.fat}/{testSettings.fat}</Text>
+              <Text style={styles.macroInt}>{Math.round(dailyMacros.fat)}/{testSettings.fat}</Text>
           </View>
         </View>
       </View>
@@ -142,7 +155,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
       quickAdd: state.appState.quickAdd,
-      date: state.appState.date
+      date: state.appState.date,
+      data: state.dataReducer.data
   }
 }
 

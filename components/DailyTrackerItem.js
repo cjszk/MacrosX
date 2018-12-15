@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { Text, View } from 'react-native';
 
 class DailyTrackerItem extends React.Component {
 
@@ -10,22 +10,19 @@ class DailyTrackerItem extends React.Component {
         return (
             <View style={[styles.flexRow, styles.main]}>
                 <View style={styles.flexColumn}>
-                    <Text style={styles.text}>{data.name}</Text>
-                    <Text style={styles.text}>{data.date}</Text>
+                    <Text style={styles.textName}>{data.name}</Text>
+                    <Text style={styles.textServings}>{data.servings} {data.measurement}</Text>
                 </View>
                 <View style={styles.flexRow}>
                     <Text style={[styles.macronutrient, {
                         backgroundColor: 'skyblue',
-
-                    }]}>{data.protein}g</Text>
+                    }]}>{data.protein * data.servings}g</Text>
                     <Text style={[styles.macronutrient, {
                         backgroundColor: 'orange',
-
-                    }]}>{data.carbs}g</Text>
+                    }]}>{data.carbs * data.servings}g</Text>
                     <Text style={[styles.macronutrient, {
                         backgroundColor: 'yellow',
-
-                    }]}>{data.fat}g</Text>
+                    }]}>{data.fat * data.servings}g</Text>
                 </View>
             </View>
         );
@@ -37,7 +34,6 @@ const styles = {
         backgroundColor: 'limegreen',
         borderWidth: 0.5,
         borderColor: 'black',
-        padding: .5,
     },
     flexRow: {
         display: 'flex',
@@ -49,7 +45,16 @@ const styles = {
         justifyContent: 'space-between',
         flexDirection: 'column',
     },
-    text: {
+    textName: {
+        fontSize: 18,
+        marginBottom: 2,
+        marginTop: 2,
+        marginLeft: 5,
+        marginRight: 5,
+    },
+    textServings: {
+        marginBottom: 2,
+        marginTop: 2,
         marginLeft: 5,
         marginRight: 5,
     },
