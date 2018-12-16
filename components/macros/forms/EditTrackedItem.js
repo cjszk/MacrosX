@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { AsyncStorage, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { Icon } from 'react-native-elements';
-import moment from 'moment';
-import { toggleTab } from '../actions/appState';
-import globalStyles from '../globalStyles';
+import { toggleTab } from '../../../actions/appState';
+import globalStyles from '../../../globalStyles';
 
 class AddItem extends React.Component {
     constructor(props) {
@@ -18,7 +17,6 @@ class AddItem extends React.Component {
             sugar: 0,
             servings: this.props.item.servings,
             measurement: '',
-            toggleTimePicker: false,
         }
     }
 

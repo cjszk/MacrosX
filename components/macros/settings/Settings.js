@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, TouchableOpacity, Text } from 'react-native';
-import moment from 'moment';
-import { toggleTab } from '../actions/appState';
-import globalStyles from '../globalStyles';
+import { toggleTab } from '../../../actions/appState';
+import globalStyles from '../../../globalStyles';
 
 class Settings extends React.Component {
 

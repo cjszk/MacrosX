@@ -4,6 +4,12 @@ export const toggleTab = (tab) => ({
     tab
 });
 
+export const TOGGLE_MODE = 'TOGGLE_MODE';
+export const toggleMode = (mode) => ({
+    type: TOGGLE_MODE,
+    mode
+})
+
 export const ADD_ITEM = 'ADD_ITEM';
 export const addItem = (item) => ({
     type: ADD_ITEM,

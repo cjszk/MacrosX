@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { Icon } from 'react-native-elements';
-import globalStyles from '../globalStyles';
-import { addItem, editLibraryItem } from '../actions/appState';
+import globalStyles from '../../../globalStyles';
+import { addItem, editLibraryItem } from '../../../actions/appState';
 
 class LibraryItem extends React.Component {
 
@@ -17,13 +17,13 @@ class LibraryItem extends React.Component {
                 </View>
                 <View style={styles.macros}>
                     <Text style={[styles.macronutrient, {
-                        backgroundColor: 'pink',
+                        backgroundColor: globalStyles.proteinColor,
                     }]}>{item.protein}g</Text>
                     <Text style={[styles.macronutrient, {
-                        backgroundColor: 'skyblue',
+                        backgroundColor: globalStyles.carbColor,
                     }]}>{item.carbs}g</Text>
                     <Text style={[styles.macronutrient, {
-                        backgroundColor: 'yellow',
+                        backgroundColor: globalStyles.fatColor,
                     }]}>{item.fat}g</Text>
                 </View>
                 <View style={styles.buttonsView}>

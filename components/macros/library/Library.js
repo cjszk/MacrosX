@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
-import { Icon } from 'react-native-elements';
 import moment from 'moment';
-import globalStyles from '../globalStyles';
+import globalStyles from '../../../globalStyles';
 import LibraryItem from './LibraryItem';
-import { toggleTab } from '../actions/appState';
+import { toggleTab } from '../../../actions/appState';
 
 class Library extends React.Component {
     constructor(props) {

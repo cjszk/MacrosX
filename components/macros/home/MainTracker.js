@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { StyleSheet, Text, View } from 'react-native';
 import PieChart from 'react-native-pie-chart';
-import globalStyles from '../globalStyles';
+import globalStyles from '../../../globalStyles';
 
 class MainTracker extends React.Component {
   constructor(props) {
@@ -44,7 +43,7 @@ class MainTracker extends React.Component {
         <PieChart
             chart_wh={250}
             series={[dailyMacros.protein, dailyMacros.carbs, dailyMacros.fat]}
-            sliceColor={['#FFC0CB','#87CEEB','#FFFF00']}
+            sliceColor={[globalStyles.proteinColor, globalStyles.carbColor, globalStyles.fatColor]}
           />
       </View>
     )
@@ -61,17 +60,17 @@ class MainTracker extends React.Component {
       <View style={styles.mainContainer}>
         <View style={styles.macrosContainer}>
           <View style={styles.protein}>
-              {this.createColorBar((dailyMacros.protein/goals.protein), 'pink')}
+              {this.createColorBar((dailyMacros.protein/goals.protein), globalStyles.proteinColor)}
               <Text style={styles.macroHeader}>Protein</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.protein)}/{goals.protein}</Text>
           </View>
           <View style={styles.carbs}>
-              {this.createColorBar((dailyMacros.carbs/goals.carbs), 'skyblue')}
+              {this.createColorBar((dailyMacros.carbs/goals.carbs), globalStyles.carbColor)}
               <Text style={styles.macroHeader}>Carbs</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.carbs)}/{goals.carbs}</Text>
           </View>
           <View style={styles.fat}>
-              {this.createColorBar((dailyMacros.fat/goals.fat), 'yellow')}
+              {this.createColorBar((dailyMacros.fat/goals.fat), globalStyles.fatColor)}
               <Text style={styles.macroHeader}>Fat</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.fat)}/{goals.fat}</Text>
           </View>

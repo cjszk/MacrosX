@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
-import globalStyles from '../globalStyles';
-import { editTrackedItem } from '../actions/appState';
+import globalStyles from '../../../globalStyles';
+import { editTrackedItem } from '../../../actions/appState';
 
 class DailyTrackerItem extends React.Component {
 
@@ -18,17 +18,17 @@ class DailyTrackerItem extends React.Component {
                 </View>
                 <View style={[styles.flexRow, styles.macros]}>
                     <Text style={[styles.macronutrient, {
-                        backgroundColor: 'pink',
+                        backgroundColor: globalStyles.proteinColor,
                     }]}>
                         <Text>{item.protein * item.servings}g</Text>
                     </Text>
                     <Text style={[styles.macronutrient, {
-                        backgroundColor: 'skyblue',
+                        backgroundColor: globalStyles.carbColor,
                     }]}>
                         <Text>{item.carbs * item.servings}g</Text>
                     </Text>
                     <Text style={[styles.macronutrient, {
-                        backgroundColor: 'yellow',
+                        backgroundColor: globalStyles.fatColor,
                     }]}>
                         <Text>{item.fat * item.servings}g</Text>
                     </Text>

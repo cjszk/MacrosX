@@ -1,17 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage, View, TouchableOpacity, Text, TextInput } from 'react-native';
-import { toggleTab } from '../actions/appState';
+import { toggleTab } from '../../../actions/appState';
 
 class Goals extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             selected: 'By Macros',
-            protein: 0,
-            carbs: 0,
-            fat: 0,
-            calories: 0,
+            protein: this.props.data.goals.protein,
+            carbs: this.props.data.goals.carbs,
+            fat: this.props.data.goals.fat,
+            calories: this.props.data.goals.calories,
             proteinP: 0,
             carbsP: 0,
             fatP: 0,
@@ -43,7 +43,7 @@ class Goals extends React.Component {
         );
     }
 
-    renderNutrientByInt(macro, key) {
+    renderNutrientByInt(key) {
         const title = key.split('')[0].toUpperCase() + key.split('').slice(1).join('');
         const macroValue = this.state[key];
         return (
@@ -53,6 +53,7 @@ class Goals extends React.Component {
                 value={String(macroValue)}
                 style={styles.macroInput}
                 keyboardType='numeric'
+                maxLength={3}
                 onChangeText={(n) => {
                     if (!n.length) this.setState({[key]: 0})
                     else this.setState({[key]: parseInt(n)})
@@ -61,7 +62,7 @@ class Goals extends React.Component {
         )
     };
 
-    renderNutrientByPercent(macro, key, amount) {
+    renderNutrientByPercent(key, amount) {
         const title = key.split('')[0].toUpperCase() + key.split('').slice(1, key.length - 1).join('');
         const macroValue = this.state[key];
         return (
@@ -71,6 +72,7 @@ class Goals extends React.Component {
                 value={String(macroValue)}
                 style={styles.macroInput}
                 keyboardType='numeric'
+                maxLength={3}
                 onChangeText={(n) => {
                     if (!n.length) this.setState({[key]: 0})
                     else if (n > 100) this.setState({[key]: 100})
@@ -87,9 +89,9 @@ class Goals extends React.Component {
         return (
             <View style={styles.menu}>
                 <View style={styles.macroRow}>
-                    {this.renderNutrientByInt(protein, 'protein')}
-                    {this.renderNutrientByInt(carbs, 'carbs')}
-                    {this.renderNutrientByInt(fat, 'fat')}
+                    {this.renderNutrientByInt('protein')}
+                    {this.renderNutrientByInt('carbs')}
+                    {this.renderNutrientByInt('fat')}
                 </View>
                 <View style={styles.caloriesRow}>
                     <Text style={styles.caloriesByMacroText}>Calories: {calculatedCalories}</Text>
@@ -112,6 +114,7 @@ class Goals extends React.Component {
                             value={String(calories)}
                             style={styles.caloriesInput}
                             keyboardType='numeric'
+                            maxLength={4}
                             onChangeText={(n) => {
                                 if (!n.length) this.setState({calories: 0})
                                 else this.setState({calories: parseInt(n)})
@@ -119,9 +122,9 @@ class Goals extends React.Component {
                     </View>
                 </View>
                 <View style={styles.macroRow}>
-                    {this.renderNutrientByPercent(proteinP, 'proteinP', protein)}
-                    {this.renderNutrientByPercent(carbsP, 'carbsP', carbs)}
-                    {this.renderNutrientByPercent(fatP, 'fatP', fat)}
+                    {this.renderNutrientByPercent('proteinP', protein)}
+                    {this.renderNutrientByPercent('carbsP', carbs)}
+                    {this.renderNutrientByPercent('fatP', fat)}
                 </View>
                 <View style={styles.showPercentView}>
                     <Text style={styles.showPercentText}>{proteinP + carbsP + fatP}%</Text>
