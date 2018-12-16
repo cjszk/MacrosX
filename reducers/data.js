@@ -3,7 +3,8 @@ import { AsyncStorage } from 'react-native';
 import { SAVE_DATA } from '../actions/data';
 
 const initialState = {
-    data: {}
+    data: {},
+    library: {}
 }
 
 export default function appStateReducer(state=initialState, action) {
@@ -16,17 +17,44 @@ export default function appStateReducer(state=initialState, action) {
 } 
 
 const data = {
-    library: [{
-        name: 'Pasta',
-        protein: 5,
-        carbs: 42,
-        fat: 7,
-        fiber: 0,
-        sugar: 0,
-    }],
+    library: [
+        {
+            name: 'Pasta',
+            protein: 5,
+            carbs: 42,
+            fat: 7,
+            fiber: 0,
+            sugar: 0,
+            date: moment().format(),
+            servingSize: 300,
+            measurement: 'grams'
+        },
+        {
+            name: 'Whey Protein',
+            protein: 30,
+            carbs: 2,
+            fat: 1,
+            fiber: 0,
+            sugar: 0,
+            date: moment().format(),
+            servingSize: 40,
+            measurement: 'grams'
+        },
+        {
+            name: 'almonds',
+            protein: 5,
+            carbs: 7,
+            fat: 11,
+            fiber: 3,
+            sugar: 0,
+            date: moment().format(),
+            servingSize: 10,
+            measurement: 'pieces'
+        },
+    ],
     entries: [
         {
-            date: 1544852141637,
+            date: moment().format(),
             name: 'Pasta',
             protein: 5,
             carbs: 42,
@@ -37,7 +65,7 @@ const data = {
             measurement: 'grams',
         },
         {
-            date: 1544852141638,
+            date: moment().format(),
             name: 'Whey Protein',
             protein: 30,
             carbs: 1,
@@ -48,7 +76,7 @@ const data = {
             measurement: 'grams'
         },
         {
-            date: 1544852141639,
+            date: moment().format(),
             name: 'Banana',
             protein: 2,
             carbs: 42,
@@ -59,7 +87,7 @@ const data = {
             measurement: 'grams',
         },
         {
-            date: 1544852141640,
+            date: moment().format(),
             name: 'Almonds',
             protein: 5,
             carbs: 8,
@@ -70,7 +98,7 @@ const data = {
             measurement: 'grams'
         },
         {
-            date: 1544852141642,
+            date: moment().format(),
             name: 'Almonds',
             protein: 5,
             carbs: 8,
@@ -81,7 +109,7 @@ const data = {
             measurement: 'grams'
         },
         {
-            date: 1544852141643,
+            date: moment().format(),
             name: 'Banana',
             protein: 2,
             carbs: 42,
@@ -96,7 +124,7 @@ const data = {
 
 storeData = async () => {
     try {
-        console.log('this ran')
+        console.log('rewrote data with dummy data')
       await AsyncStorage.setItem('data', JSON.stringify(data));
     } catch (error) {
       console.error(error);

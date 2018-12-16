@@ -1,11 +1,13 @@
-export const TOGGLE_QUICK_ADD = 'TOGGLE_QUICK_ADD';
-export const toggleQuickAdd = () => ({
-    type: TOGGLE_QUICK_ADD
-})
+export const TOGGLE_TAB = 'TOGGLE_TAB';
+export const toggleTab = (tab) => ({
+    type: TOGGLE_TAB,
+    tab
+});
 
-export const TOGGLE_HOME_VIEW = 'TOGGLE_HOME_VIEW';
-export const toggleHomeView = () => ({
-    type: TOGGLE_HOME_VIEW
+export const ADD_ITEM = 'ADD_ITEM';
+export const addItem = (item) => ({
+    type: ADD_ITEM,
+    item
 })
 
 export const DECREMENT_DATE = 'DECREMENT_DATE';

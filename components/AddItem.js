@@ -6,7 +6,7 @@ import moment from 'moment';
 import { toggleTab } from '../actions/appState';
 import globalStyles from '../globalStyles';
 
-class QuickAdd extends React.Component {
+class AddItem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,29 +24,19 @@ class QuickAdd extends React.Component {
 
     renderNutrient(macro, key) {
         const title = key.split('')[0].toUpperCase() + key.split('').slice(1).join('');
-        const macroValue = this.state[key];
+        const { servings } = this.state;
         return (
         <View style={styles.macro}>
             <Text style={styles.macroText}>{title}</Text>
-            <TextInput
-                value={String(macroValue)}
-                style={styles.macroInput}
-                keyboardType='numeric'
-                onChangeText={(n) => {
-                    if (!n.length) this.setState({[key]: 0})
-                    else this.setState({[key]: parseInt(n)})
-                }}/>
+            <Text style={styles.macroInput}>{String(macro * servings)}</Text>
         </View>
         )
     }
 
     handleSubmit = async () => {
-        let { name, measurement } = this.state;
-        let { date } = this.props;
-        if (!name.length) name = 'Quick Added Item';
-        if (!measurement.length) measurement = 'servings';
-        const { protein, carbs, fat, fiber, sugar, servings } = this.state;
-        const { data } = this.props;
+        const { item, date, data } = this.props;
+        const { servings } = this.state;
+        const { protein, carbs, fat, fiber, sugar, measurement, name } = item;
         const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement, date };
         // Copy of data.entries - add new entry
         const newEntries = data.entries.slice();
@@ -63,20 +53,14 @@ class QuickAdd extends React.Component {
     }
 
     render() {
-        const { name, protein, carbs, fat, fiber, sugar, servings, measurement } = this.state;
+        const { servings } = this.state;
+        const { item } = this.props;
+        const { protein, carbs, fat, fiber, sugar, measurement, name } = item;
+
         return (
             <View style={styles.main}>
                 <View style={styles.mainContainer}>
-                    <Text style={styles.header}>Quick Add</Text>
-                    <View style={styles.nameView}>
-                        <Text style={styles.nameText}>Name: </Text>
-                        <TextInput
-                            value={name}
-                            onChangeText={(e) => this.setState({name: e})}
-                            style={styles.nameInput}
-                            placeholder="Name (optional for Quick Add)"
-                        />
-                    </View>
+                    <Text style={styles.header}>{name}</Text>
                 </View>
                 <View style={styles.nutrientsContainer}>
                     <View style={styles.macroContainer}>
@@ -103,12 +87,7 @@ class QuickAdd extends React.Component {
                             }
                         }}
                     />
-                    <TextInput
-                        value={measurement.toLowerCase()}
-                        style={styles.servingsMeasurementInput}
-                        placeholder="(optional)"
-                        onChangeText={(m) => this.setState({measurement: m})}
-                    />
+                    <Text>{measurement}</Text>
                 </View>
                 <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit()}>
                     <Text style={styles.submitText}>Enter</Text>
@@ -135,26 +114,6 @@ const styles = {
         fontSize: 32,
         alignSelf: 'center'
     },
-    nameView: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-        alignSelf: 'left',  
-    },
-    nameText: {
-        fontSize: 18,
-        padding: 10,
-        width: '30%'
-    },
-    nameInput: {
-        borderRadius: 4,
-        borderWidth: 0.5,
-        borderColor: '#000',
-        padding: 10,
-        marginTop: 10,
-        width: '70%'
-    },
     nutrientsContainer: {
         display: 'flex',
         flexDirection: 'column',
@@ -178,9 +137,6 @@ const styles = {
     },
     macroInput: {
         alignSelf: 'center',
-        borderRadius: 4,
-        borderWidth: 0.5,
-        borderColor: globalStyles.color,
         marginTop: 10,
         width: 60,
         height: 40,
@@ -250,9 +206,10 @@ const styles = {
 const mapStateToProps = state => {
     return {
         quickAdd: state.appState.quickAdd,
+        item: state.appState.addItem,
         date: state.appState.date,
         data: state.dataReducer.data
     }
 }
 
-export default connect(mapStateToProps)(QuickAdd);
+export default connect(mapStateToProps)(AddItem);

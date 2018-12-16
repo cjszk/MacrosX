@@ -6,7 +6,7 @@ import moment from 'moment';
 import { toggleTab } from '../actions/appState';
 import globalStyles from '../globalStyles';
 
-class QuickAdd extends React.Component {
+class NewItem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -16,9 +16,8 @@ class QuickAdd extends React.Component {
             fat: 0,
             fiber: 0,
             sugar: 0,
-            servings: 1,
+            servingSize: 1,
             measurement: '',
-            toggleTimePicker: false,
         }
     }
 
@@ -43,38 +42,38 @@ class QuickAdd extends React.Component {
     handleSubmit = async () => {
         let { name, measurement } = this.state;
         let { date } = this.props;
-        if (!name.length) name = 'Quick Added Item';
-        if (!measurement.length) measurement = 'servings';
-        const { protein, carbs, fat, fiber, sugar, servings } = this.state;
+        if (!name.length) return alert('Please name this item');
+        if (!measurement.length) return alert('Please give a measurement type: Example: grams, ml');
+        const { protein, carbs, fat, fiber, sugar, servingSize } = this.state;
         const { data } = this.props;
-        const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement, date };
+        const newEntry = { name, protein, carbs, fat, fiber, sugar, servingSize, measurement, date };
         // Copy of data.entries - add new entry
-        const newEntries = data.entries.slice();
+        const newEntries = data.library.slice();
         newEntries.push(newEntry);
         // Copy of data - replace with new entries
         let newData = data;
-        newData.entries = newEntries;
+        newData.library = newEntries;
         try {
           await AsyncStorage.setItem('data', JSON.stringify(newData));
-          this.props.dispatch(toggleTab('home'))
+          this.props.dispatch(toggleTab('library'))
         } catch (error) {
           console.error(error);
         }
     }
 
     render() {
-        const { name, protein, carbs, fat, fiber, sugar, servings, measurement } = this.state;
+        const { name, protein, carbs, fat, fiber, sugar, servingSize, measurement } = this.state;
         return (
             <View style={styles.main}>
                 <View style={styles.mainContainer}>
-                    <Text style={styles.header}>Quick Add</Text>
+                    <Text style={styles.header}>New Library Item</Text>
                     <View style={styles.nameView}>
                         <Text style={styles.nameText}>Name: </Text>
                         <TextInput
                             value={name}
                             onChangeText={(e) => this.setState({name: e})}
                             style={styles.nameInput}
-                            placeholder="Name (optional for Quick Add)"
+                            placeholder="Name (required)"
                         />
                     </View>
                 </View>
@@ -90,23 +89,23 @@ class QuickAdd extends React.Component {
                     </View>
                 </View>
                 <View style={styles.servingsContainer}>
-                    <Text style={styles.servingsText}>Servings: </Text>
+                    <Text style={styles.servingsText}>Serving Size: </Text>
                     <TextInput
                         style={styles.servingsNumberInput}
-                        value={String(servings)}
+                        value={String(servingSize)}
                         keyboardType='numeric'
                         onChangeText={(s) => {
-                            if (!s.length) this.setState({servings: 0})
+                            if (!s.length) this.setState({servingSize: 0})
                             else {
                                 const value = parseInt(s);
-                                this.setState({servings: value})
+                                this.setState({servingSize: value})
                             }
                         }}
                     />
                     <TextInput
                         value={measurement.toLowerCase()}
                         style={styles.servingsMeasurementInput}
-                        placeholder="(optional)"
+                        placeholder="Ex: grams..."
                         onChangeText={(m) => this.setState({measurement: m})}
                     />
                 </View>
@@ -255,4 +254,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(QuickAdd);
+export default connect(mapStateToProps)(NewItem);

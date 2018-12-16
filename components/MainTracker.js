@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
-import moment from 'moment';
-import { incrementDate, decrementDate } from '../actions/appState';
+import PieChart from 'react-native-pie-chart';
+import globalStyles from '../globalStyles';
 
 class MainTracker extends React.Component {
   constructor(props) {
@@ -11,14 +11,6 @@ class MainTracker extends React.Component {
     this.state = {
       filteredItems: []
     }
-  }
-
-  decrementDate() {
-    this.props.dispatch(decrementDate());
-  }
-
-  incrementDate() {
-    this.props.dispatch(incrementDate());
   }
 
   calculateMacros(data) {
@@ -46,37 +38,33 @@ class MainTracker extends React.Component {
     return (<Text style={{height: '100%', width, position: 'absolute', left: 0, top: 0, backgroundColor}}></Text>);
   }
 
+  renderPie(dailyMacros) {
+    return (
+      <View style={styles.pieChart}>
+        <PieChart
+            chart_wh={250}
+            series={[dailyMacros.protein, dailyMacros.carbs, dailyMacros.fat]}
+            sliceColor={['#FFC0CB','#87CEEB','#FFFF00']}
+          />
+      </View>
+    )
+  }
+
   render() {
-    const { date, dailyData } = this.props;
+    const { dailyData } = this.props;
     const dailyMacros = this.calculateMacros(dailyData);
-    
+    let pie;
+    if (dailyMacros.protein > 0 || dailyMacros.carbs > 0 || dailyMacros.fat > 0) pie = this.renderPie(dailyMacros);  
     return (
       <View style={styles.mainContainer}>
-        <View style={styles.date}>
-          <TouchableOpacity onPress={() => this.decrementDate()}>
-            <Icon
-              name="chevron-left"
-              type="fontawesome"
-              size={60}
-            />
-          </TouchableOpacity>
-          <Text style={styles.dateText}>{moment(date).format("MMM DD, YYYY")}</Text>
-          <TouchableOpacity onPress={() => this.incrementDate()}>
-            <Icon
-              name="chevron-right"
-              type="fontawesome"
-              size={60}
-            />
-          </TouchableOpacity>
-        </View>
         <View style={styles.macrosContainer}>
           <View style={styles.protein}>
-              {this.createColorBar((dailyMacros.protein/testSettings.protein), 'skyblue')}
+              {this.createColorBar((dailyMacros.protein/testSettings.protein), 'pink')}
               <Text style={styles.macroHeader}>Protein</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.protein)}/{testSettings.protein}</Text>
           </View>
           <View style={styles.carbs}>
-              {this.createColorBar((dailyMacros.carbs/testSettings.carbs), 'orange')}
+              {this.createColorBar((dailyMacros.carbs/testSettings.carbs), 'skyblue')}
               <Text style={styles.macroHeader}>Carbs</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.carbs)}/{testSettings.carbs}</Text>
           </View>
@@ -90,8 +78,13 @@ class MainTracker extends React.Component {
               {this.createColorBar((dailyMacros.calories/testSettings.calories), 'limegreen')}
               <Text style={styles.macroHeader}>Calories</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.calories)}/{testSettings.calories}</Text>
-          </View>
-      </View>
+        </View>
+        <View style={styles.misc}>
+          <Text>Fiber: {dailyMacros.fiber}</Text>
+          <Text>Sugar: {dailyMacros.sugar}</Text>
+        </View>
+        {pie}
+    </View>
     );
   }
 }
@@ -116,16 +109,6 @@ const styles = StyleSheet.create({
   mainContainer: {
     padding: 20,
   },
-  date: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 15,
-  },
-  dateText: {
-    alignSelf: 'center',
-    fontSize: 32,
-  },
   macrosContainer: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -148,7 +131,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 4,
     borderWidth: 0.5,
-    borderColor: '#000',
+    borderColor: globalStyles.color,
   },
   carbs: {
     display: 'flex',
@@ -158,7 +141,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 4,
     borderWidth: 0.5,
-    borderColor: '#000',
+    borderColor: globalStyles.color,
   },
   fat: {
     display: 'flex',
@@ -168,7 +151,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 4,
     borderWidth: 0.5,
-    borderColor: '#000',
+    borderColor: globalStyles.color,
   },
   calories: {
     display: 'flex',
@@ -177,8 +160,20 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 4,
     borderWidth: 0.5,
-    borderColor: '#000',
+    borderColor: globalStyles.color,
     marginTop: 20,
+  },
+  misc: {
+    marginTop: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  pieChart: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   }
 });
 

@@ -3,14 +3,13 @@ import { connect } from 'react-redux';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import DailyTrackerItem from './DailyTrackerItem';
 import moment from 'moment';
+import globalStyles from '../globalStyles';
 
 class DailyTracker extends React.Component {
 
     render() {
         const { dailyData } = this.props;
-        let renderItems = dailyData.sort((a, b) => {
-            return moment(a.date).format('x') - moment(b.date).format('x')
-        }).map((item, index) => <DailyTrackerItem data={item} key={index}/>);
+        let renderItems = dailyData.sort((a, b) => moment(a.date).format('x') < moment(b.date).format('x')).map((item, index) => <DailyTrackerItem data={item} key={index}/>);
 
         return (
         <View style={styles.main}>
@@ -25,13 +24,11 @@ class DailyTracker extends React.Component {
 const styles = StyleSheet.create({
     main: {
         borderWidth: .5,
-        borderColor: 'black',
-        height: '37.5%',
+        borderColor: globalStyles.color,
+        height: '35%',
         overflow: 'scroll'
     }
 });
-
-console.log(StyleSheet.create)
 
 const mapStateToProps = state => {
     return {

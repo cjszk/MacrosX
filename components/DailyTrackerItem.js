@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
+import globalStyles from '../globalStyles';
 
 class DailyTrackerItem extends React.Component {
 
@@ -16,22 +17,28 @@ class DailyTrackerItem extends React.Component {
                 </View>
                 <View style={[styles.flexRow, styles.macros]}>
                     <Text style={[styles.macronutrient, {
-                        backgroundColor: 'skyblue',
-                    }]}>{data.protein * data.servings}g</Text>
+                        backgroundColor: 'pink',
+                    }]}>
+                        <Text>{data.protein * data.servings}g</Text>
+                    </Text>
                     <Text style={[styles.macronutrient, {
-                        backgroundColor: 'orange',
-                    }]}>{data.carbs * data.servings}g</Text>
+                        backgroundColor: 'skyblue',
+                    }]}>
+                        <Text>{data.carbs * data.servings}g</Text>
+                    </Text>
                     <Text style={[styles.macronutrient, {
                         backgroundColor: 'yellow',
-                    }]}>{data.fat * data.servings}g</Text>
+                    }]}>
+                        <Text>{data.fat * data.servings}g</Text>
+                    </Text>
                 </View>
-                <View style={styles.icons}>
+                <TouchableOpacity style={styles.icons}>
                     <Icon
                         name="edit"
                         type="antdesign"
                         size={35}
                     />
-                </View>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -41,7 +48,7 @@ const styles = {
     main: {
         // backgroundColor: 'limegreen',
         borderWidth: 0.5,
-        borderColor: 'black',
+        borderColor: globalStyles.color,
     },
     flexRow: {
         display: 'flex',
