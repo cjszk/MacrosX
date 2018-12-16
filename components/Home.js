@@ -8,6 +8,11 @@ import DailyTracker from './DailyTracker';
 import Library from './Library';
 import NewItem from './NewItem';
 import AddItem from './AddItem';
+import EditTrackedItem from './EditTrackedItem';
+import EditItem from './EditItem';
+import Settings from './Settings';
+import Graphs from './Graphs';
+import Goals from './Goals';
 
 class Home extends React.Component {
 
@@ -27,7 +32,12 @@ class Home extends React.Component {
         if (this.props.tab === 'quickAdd') return <View style={styles.main}><QuickAdd/></View>;
         if (this.props.tab === 'library') return <View style={styles.main}><Library/></View>;
         if (this.props.tab === 'newItem') return <View style={styles.main}><NewItem/></View>;
-        if (this.props.tab === 'addItem') return <View style={styles.main}><AddItem/></View>
+        if (this.props.tab === 'addItem') return <View style={styles.main}><AddItem/></View>;
+        if (this.props.tab === 'editTrackedItem') return <View style={styles.main}><EditTrackedItem/></View>;
+        if (this.props.tab === 'editItem') return <View style={styles.main}><EditItem/></View>;
+        if (this.props.tab === 'settings') return <View style={styles.main}><Settings/></View>
+        if (this.props.tab === 'graphs') return <View style={styles.main}><Graphs/></View>
+        if (this.props.tab === 'goals') return <View style={styles.main}><Goals/></View>
     }
 
     render() {

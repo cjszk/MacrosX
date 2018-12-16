@@ -3,36 +3,37 @@ import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 import globalStyles from '../globalStyles';
+import { editTrackedItem } from '../actions/appState';
 
 class DailyTrackerItem extends React.Component {
 
     render() {
-        const { data } = this.props;
+        const { item } = this.props;
 
         return (
             <View style={[styles.flexRow, styles.main]}>
                 <View style={styles.name}>
-                    <Text style={styles.textName}>{data.name}</Text>
-                    <Text style={styles.textServings}>{data.servings} {data.measurement}</Text>
+                    <Text style={styles.textName}>{item.name}</Text>
+                    <Text style={styles.textServings}>{item.servings} {item.measurement}</Text>
                 </View>
                 <View style={[styles.flexRow, styles.macros]}>
                     <Text style={[styles.macronutrient, {
                         backgroundColor: 'pink',
                     }]}>
-                        <Text>{data.protein * data.servings}g</Text>
+                        <Text>{item.protein * item.servings}g</Text>
                     </Text>
                     <Text style={[styles.macronutrient, {
                         backgroundColor: 'skyblue',
                     }]}>
-                        <Text>{data.carbs * data.servings}g</Text>
+                        <Text>{item.carbs * item.servings}g</Text>
                     </Text>
                     <Text style={[styles.macronutrient, {
                         backgroundColor: 'yellow',
                     }]}>
-                        <Text>{data.fat * data.servings}g</Text>
+                        <Text>{item.fat * item.servings}g</Text>
                     </Text>
                 </View>
-                <TouchableOpacity style={styles.icons}>
+                <TouchableOpacity style={styles.icons} onPress={() => this.props.dispatch(editTrackedItem(item))}>
                     <Icon
                         name="edit"
                         type="antdesign"

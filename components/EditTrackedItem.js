@@ -16,7 +16,7 @@ class AddItem extends React.Component {
             fat: 0,
             fiber: 0,
             sugar: 0,
-            servings: 1,
+            servings: this.props.item.servings,
             measurement: '',
             toggleTimePicker: false,
         }
@@ -33,16 +33,31 @@ class AddItem extends React.Component {
         )
     }
 
+    deleteItem = async () => {
+        const { item, data } = this.props;
+        let newData = data;
+        const newEntries = newData.entries.filter((i) => {
+            if (i !== item) return i;
+        })
+        newData.entries = newEntries;
+        try {
+          await AsyncStorage.setItem('data', JSON.stringify(newData));
+          this.props.dispatch(toggleTab('home'))
+        } catch (error) {
+          console.error(error);
+        }
+    }
+
     handleSubmit = async () => {
         const { item, date, data } = this.props;
         const { servings } = this.state;
         const { protein, carbs, fat, fiber, sugar, measurement, name } = item;
         const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement, date };
-        // Copy of data.entries - add new entry
-        const newEntries = data.entries.slice();
-        newEntries.push(newEntry);
-        // Copy of data - replace with new entries
         let newData = data;
+        const newEntries = newData.entries.map((i) => {
+            if (i === item) return newEntry;
+            return i;
+        })
         newData.entries = newEntries;
         try {
           await AsyncStorage.setItem('data', JSON.stringify(newData));
@@ -89,9 +104,14 @@ class AddItem extends React.Component {
                     />
                     <Text style={styles.measurement}>{measurement}</Text>
                 </View>
-                <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit()}>
-                    <Text style={styles.submitText}>Enter</Text>
-                </TouchableOpacity>
+                <View style={styles.buttons}>
+                    <TouchableOpacity style={styles.delete}onPress={() => this.deleteItem()}>
+                        <Icon name='trash' type='entypo' size={60}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit()}>
+                        <Text style={styles.submitText}>Enter</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
@@ -177,10 +197,13 @@ const styles = {
         alignSelf: 'center',
         marginLeft: 10,
     },
-    submit: {
-        marginLeft: 'auto',
-        marginRight: 'auto',
+    buttons: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         marginTop: 60,
+    },
+    submit: {
         padding: 20,
         borderRadius: 4,
         borderWidth: 0.5,
@@ -190,7 +213,7 @@ const styles = {
     submitText: {
         textAlign: 'center',
         fontSize: 18
-    }
+    },
 }
 
 const mapStateToProps = state => {

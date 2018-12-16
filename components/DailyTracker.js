@@ -9,7 +9,7 @@ class DailyTracker extends React.Component {
 
     render() {
         const { dailyData } = this.props;
-        let renderItems = dailyData.sort((a, b) => moment(a.date).format('x') < moment(b.date).format('x')).map((item, index) => <DailyTrackerItem data={item} key={index}/>);
+        let renderItems = dailyData.sort((a, b) => moment(a.date).format('x') < moment(b.date).format('x')).map((item, index) => <DailyTrackerItem item={item} key={index}/>);
 
         return (
         <View style={styles.main}>

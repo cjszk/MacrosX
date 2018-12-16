@@ -52,6 +52,8 @@ class MainTracker extends React.Component {
 
   render() {
     const { dailyData } = this.props;
+    const { goals } = this.props.data;
+    if (!goals) return (<View><Text>Loading...</Text></View>)
     const dailyMacros = this.calculateMacros(dailyData);
     let pie;
     if (dailyMacros.protein > 0 || dailyMacros.carbs > 0 || dailyMacros.fat > 0) pie = this.renderPie(dailyMacros);  
@@ -59,25 +61,25 @@ class MainTracker extends React.Component {
       <View style={styles.mainContainer}>
         <View style={styles.macrosContainer}>
           <View style={styles.protein}>
-              {this.createColorBar((dailyMacros.protein/testSettings.protein), 'pink')}
+              {this.createColorBar((dailyMacros.protein/goals.protein), 'pink')}
               <Text style={styles.macroHeader}>Protein</Text>
-              <Text style={styles.macroInt}>{Math.round(dailyMacros.protein)}/{testSettings.protein}</Text>
+              <Text style={styles.macroInt}>{Math.round(dailyMacros.protein)}/{goals.protein}</Text>
           </View>
           <View style={styles.carbs}>
-              {this.createColorBar((dailyMacros.carbs/testSettings.carbs), 'skyblue')}
+              {this.createColorBar((dailyMacros.carbs/goals.carbs), 'skyblue')}
               <Text style={styles.macroHeader}>Carbs</Text>
-              <Text style={styles.macroInt}>{Math.round(dailyMacros.carbs)}/{testSettings.carbs}</Text>
+              <Text style={styles.macroInt}>{Math.round(dailyMacros.carbs)}/{goals.carbs}</Text>
           </View>
           <View style={styles.fat}>
-              {this.createColorBar((dailyMacros.fat/testSettings.fat), 'yellow')}
+              {this.createColorBar((dailyMacros.fat/goals.fat), 'yellow')}
               <Text style={styles.macroHeader}>Fat</Text>
-              <Text style={styles.macroInt}>{Math.round(dailyMacros.fat)}/{testSettings.fat}</Text>
+              <Text style={styles.macroInt}>{Math.round(dailyMacros.fat)}/{goals.fat}</Text>
           </View>
         </View>
         <View style={styles.calories}>
-              {this.createColorBar((dailyMacros.calories/testSettings.calories), 'limegreen')}
+              {this.createColorBar((dailyMacros.calories/goals.calories), 'limegreen')}
               <Text style={styles.macroHeader}>Calories</Text>
-              <Text style={styles.macroInt}>{Math.round(dailyMacros.calories)}/{testSettings.calories}</Text>
+              <Text style={styles.macroInt}>{Math.round(dailyMacros.calories)}/{goals.calories}</Text>
         </View>
         <View style={styles.misc}>
           <Text>Fiber: {dailyMacros.fiber}</Text>
@@ -87,22 +89,6 @@ class MainTracker extends React.Component {
     </View>
     );
   }
-}
-
-const test = {
-  id: 1,
-  name: 'Pasta',
-  date: 'Dec 28, 2018',
-  protein: 18,
-  carbs: 72,
-  fat: 15,
-};
-
-const testSettings = {
-  protein: 180,
-  carbs: 180,
-  fat: 48,
-  calories: 1872
 }
 
 const styles = StyleSheet.create({

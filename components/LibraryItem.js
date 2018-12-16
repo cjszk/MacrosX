@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { Icon } from 'react-native-elements';
 import globalStyles from '../globalStyles';
-import { addItem } from '../actions/appState';
+import { addItem, editLibraryItem } from '../actions/appState';
 
 class LibraryItem extends React.Component {
 
@@ -34,7 +34,7 @@ class LibraryItem extends React.Component {
                             size={35}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.icons}>
+                    <TouchableOpacity style={styles.icons} onPress={() => this.props.dispatch(editLibraryItem(item))}>
                         <Icon
                             name="edit"
                             type="antdesign"

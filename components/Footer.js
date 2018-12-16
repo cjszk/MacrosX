@@ -31,13 +31,13 @@ class Footer extends React.Component {
                 name: 'Graphs',
                 icon: 'line-graph',
                 type: 'entypo',
-                action: () => console.log('not yet added'),
+                action: () => this.props.dispatch(toggleTab('graphs')),
             },
             {
                 name: 'Settings',
                 icon: 'cog',
                 type: 'entypo',
-                action: () => console.log('not yet added'),
+                action: () => this.props.dispatch(toggleTab('settings')),
             },
             ],
         }

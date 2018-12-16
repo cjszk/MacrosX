@@ -17,6 +17,12 @@ export default function appStateReducer(state=initialState, action) {
 } 
 
 const data = {
+    goals: {
+        protein: 176,
+        carbs: 176,
+        fat: 48,
+        calories: 1840
+    },
     library: [
         {
             name: 'Pasta',
