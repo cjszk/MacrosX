@@ -15,8 +15,8 @@ class QuickAdd extends React.Component {
             fiber: 0,
             sugar: 0,
             servings: 1,
+            servingSize: 1,
             measurement: '',
-            toggleTimePicker: false,
         }
     }
 
@@ -31,10 +31,7 @@ class QuickAdd extends React.Component {
                 value={String(macroValue)}
                 style={styles.macroInput}
                 keyboardType='numeric'
-                onChangeText={(n) => {
-                    if (!n.length) this.setState({[key]: 0})
-                    else this.setState({[key]: parseInt(n)})
-                }}/>
+                onChangeText={(n) => this.setState({[key]: n})}/>
         </View>
         )
     }
@@ -44,9 +41,11 @@ class QuickAdd extends React.Component {
         let { date } = this.props;
         if (!name.length) name = 'Quick Added Item';
         if (!measurement.length) measurement = 'servings';
-        const { protein, carbs, fat, fiber, sugar, servings } = this.state;
+        let { protein, carbs, fat, fiber, sugar, servings, servingSize } = this.state;
         const { data } = this.props;
-        const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement, date };
+        protein = parseInt(protein); carbs = parseInt(carbs); fat = parseInt(fat);
+        fiber = parseInt(fiber); sugar = parseInt(sugar); servings = parseInt(servings); servingSize = parseInt(servingSize);
+        const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement, date, servingSize };
         // Copy of data.entries - add new entry
         const newEntries = data.entries.slice();
         newEntries.push(newEntry);
@@ -62,7 +61,7 @@ class QuickAdd extends React.Component {
     }
 
     render() {
-        const { name, protein, carbs, fat, fiber, sugar, servings, measurement } = this.state;
+        const { name, protein, carbs, fat, fiber, sugar, servings, measurement, servingSize } = this.state;
         return (
             <View style={styles.main}>
                 <View style={styles.mainContainer}>
@@ -89,25 +88,30 @@ class QuickAdd extends React.Component {
                     </View>
                 </View>
                 <View style={styles.servingsContainer}>
-                    <Text style={styles.servingsText}>Servings: </Text>
-                    <TextInput
-                        style={styles.servingsNumberInput}
-                        value={String(servings)}
-                        keyboardType='numeric'
-                        onChangeText={(s) => {
-                            if (!s.length) this.setState({servings: 0})
-                            else {
-                                const value = parseInt(s);
-                                this.setState({servings: value})
-                            }
-                        }}
-                    />
-                    <TextInput
-                        value={measurement.toLowerCase()}
-                        style={styles.servingsMeasurementInput}
-                        placeholder="(optional)"
-                        onChangeText={(m) => this.setState({measurement: m})}
-                    />
+                    <View style={styles.servingsContainerSecondary}>
+                        <Text style={styles.servingsText}>Serving Size: </Text>
+                        <TextInput
+                            style={styles.servingsSizeInput}
+                            value={String(servingSize)}
+                            keyboardType='numeric'
+                            onChangeText={(s) => this.setState({servingSize: s})}
+                        />
+                        <TextInput
+                            value={measurement.toLowerCase()}
+                            style={styles.servingsMeasurementInput}
+                            placeholder="(optional)"
+                            onChangeText={(m) => this.setState({measurement: m})}
+                        />
+                    </View>
+                    <View style={styles.servingsContainerSecondary}>
+                        <Text style={styles.servingsText}>Servings: </Text>
+                        <TextInput
+                            style={styles.servingsNumberInput}
+                            value={String(servings)}
+                            keyboardType='numeric'
+                            onChangeText={(s) => this.setState({servings: s})}
+                        />
+                    </View>
                 </View>
                 <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit()}>
                     <Text style={styles.submitText}>Enter</Text>
@@ -194,9 +198,14 @@ const styles = {
     },
     servingsContainer: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'center',
         padding: 10,
+    },
+    servingsContainerSecondary: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
     },
     servingsText: {
         fontSize: 18,
@@ -204,6 +213,19 @@ const styles = {
         alignSelf: 'center'
     },
     servingsNumberInput: {
+        alignSelf: 'center',
+        borderRadius: 4,
+        borderWidth: 0.5,
+        borderColor: globalStyles.color,
+        marginTop: 10,
+        marginLeft: 5,
+        marginRight: 5,
+        width: 60,
+        height: 40,
+        textAlign: 'center',
+
+    },
+    servingsSizeInput: {
         alignSelf: 'center',
         borderRadius: 4,
         borderWidth: 0.5,

@@ -33,8 +33,10 @@ class AddItem extends React.Component {
     handleSubmit = async () => {
         const { item, date, data } = this.props;
         const { servings } = this.state;
-        const { protein, carbs, fat, fiber, sugar, measurement, name } = item;
-        const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement, date };
+        let { protein, carbs, fat, fiber, sugar, measurement, name, servingSize } = item;
+        protein = parseInt(protein); carbs = parseInt(carbs); fat = parseInt(fat);
+        fiber = parseInt(fiber); sugar = parseInt(sugar); servingSize = parseInt(servingSize);
+        const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement, date, servingSize };
         // Copy of data.entries - add new entry
         const newEntries = data.entries.slice();
         newEntries.push(newEntry);
@@ -52,7 +54,7 @@ class AddItem extends React.Component {
     render() {
         const { servings } = this.state;
         const { item } = this.props;
-        const { protein, carbs, fat, fiber, sugar, measurement, name } = item;
+        const { protein, carbs, fat, fiber, sugar, measurement, name, servingSize } = item;
 
         return (
             <View style={styles.main}>
@@ -77,15 +79,9 @@ class AddItem extends React.Component {
                         value={String(servings)}
                         keyboardType='numeric'
                         maxLength={4}
-                        onChangeText={(s) => {
-                            if (!s.length) this.setState({servings: 0})
-                            else {
-                                const value = parseInt(s);
-                                this.setState({servings: value})
-                            }
-                        }}
+                        onChangeText={(s) => this.setState({servings: s})}
                     />
-                    <Text style={styles.measurement}>{measurement}</Text>
+                    <Text style={styles.measurement}>{servingSize * servings} {measurement}</Text>
                 </View>
                 <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit()}>
                     <Text style={styles.submitText}>Enter</Text>

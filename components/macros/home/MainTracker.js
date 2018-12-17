@@ -38,15 +38,23 @@ class MainTracker extends React.Component {
   }
 
   renderPie(dailyMacros) {
-    return (
-      <View style={styles.pieChart}>
-        <PieChart
-            chart_wh={250}
-            series={[dailyMacros.protein, dailyMacros.carbs, dailyMacros.fat]}
-            sliceColor={[globalStyles.proteinColor, globalStyles.carbColor, globalStyles.fatColor]}
-          />
-      </View>
-    )
+    try {
+      return (
+        <View style={styles.pieChart}>
+          <PieChart
+              chart_wh={250}
+              series={[dailyMacros.protein, dailyMacros.carbs, dailyMacros.fat]}
+              sliceColor={[globalStyles.proteinColor, globalStyles.carbColor, globalStyles.fatColor]}
+            />
+        </View>
+      )
+    } catch(e) {
+      console.error(e);
+      return (
+        <View></View>
+      )
+    }
+
   }
 
   render() {
@@ -54,7 +62,7 @@ class MainTracker extends React.Component {
     const { goals } = this.props.data;
     if (!goals) return (<View><Text>Loading...</Text></View>)
     const dailyMacros = this.calculateMacros(dailyData);
-    let pie;
+    let pie = <View style={styles.pieChart}/>;
     if (dailyMacros.protein > 0 || dailyMacros.carbs > 0 || dailyMacros.fat > 0) pie = this.renderPie(dailyMacros);  
     return (
       <View style={styles.mainContainer}>
@@ -76,7 +84,7 @@ class MainTracker extends React.Component {
           </View>
         </View>
         <View style={styles.calories}>
-              {this.createColorBar((dailyMacros.calories/goals.calories), 'limegreen')}
+              {this.createColorBar((dailyMacros.calories/goals.calories), 'green')}
               <Text style={styles.macroHeader}>Calories</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.calories)}/{goals.calories}</Text>
         </View>
@@ -159,6 +167,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
+    height: '50%',
   }
 });
 

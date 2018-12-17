@@ -16,7 +16,7 @@ export default function appStateReducer(state=initialState, action) {
     return state;
 } 
 
-const data = {
+const testData = {
     goals: {
         protein: 176,
         carbs: 176,
@@ -128,7 +128,7 @@ const data = {
     ],
 }
 
-storeData = async () => {
+storeData = async (data) => {
     try {
         console.log('rewrote data with dummy data')
       await AsyncStorage.setItem('data', JSON.stringify(data));
@@ -137,4 +137,4 @@ storeData = async () => {
     }
 }
 
-storeData();
+// storeData(null);

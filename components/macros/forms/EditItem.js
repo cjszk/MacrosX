@@ -31,10 +31,7 @@ class NewItem extends React.Component {
                 style={styles.macroInput}
                 keyboardType='numeric'
                 maxLength={3}
-                onChangeText={(n) => {
-                    if (!n.length) this.setState({[key]: 0})
-                    else this.setState({[key]: parseInt(n)})
-                }}/>
+                onChangeText={(n) => this.setState({[key]: n})}/>
         </View>
         )
     }
@@ -59,7 +56,9 @@ class NewItem extends React.Component {
         const { date, item } = this.props;
         if (!name.length) return alert('Please name this item');
         if (!measurement.length) return alert('Please give a measurement type: Example: grams, ml');
-        const { protein, carbs, fat, fiber, sugar, servingSize } = this.state;
+        let { protein, carbs, fat, fiber, sugar, servingSize } = this.state;
+        protein = parseInt(protein); carbs = parseInt(carbs); fat = parseInt(fat);
+        fiber = parseInt(fiber); sugar = parseInt(sugar); servingSize = parseInt(servingSize);
         const { data } = this.props;
         const newEntry = { name, protein, carbs, fat, fiber, sugar, servingSize, measurement, date };
         const newEntries = data.library.slice();
@@ -109,13 +108,7 @@ class NewItem extends React.Component {
                         style={styles.servingsNumberInput}
                         value={String(servingSize)}
                         keyboardType='numeric'
-                        onChangeText={(s) => {
-                            if (!s.length) this.setState({servingSize: 0})
-                            else {
-                                const value = parseInt(s);
-                                this.setState({servingSize: value})
-                            }
-                        }}
+                        onChangeText={(s) => this.setState({servingSize: s})}
                     />
                     <TextInput
                         value={measurement.toLowerCase()}

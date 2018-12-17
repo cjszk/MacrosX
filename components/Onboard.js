@@ -1,17 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage, View, TouchableOpacity, Text, TextInput } from 'react-native';
-import { toggleTab } from '../../../actions/appState';
+import { toggleTab } from '../actions/appState';
 
 class Goals extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             selected: 'By Macros',
-            protein: this.props.data.goals.protein,
-            carbs: this.props.data.goals.carbs,
-            fat: this.props.data.goals.fat,
-            calories: this.props.data.goals.calories,
+            protein: 0,
+            carbs: 0,
+            fat: 0,
+            calories: 0,
             proteinP: 0,
             carbsP: 0,
             fatP: 0,
@@ -135,8 +135,12 @@ class Goals extends React.Component {
 
     handleSubmit = async () => {
         const { selected } = this.state;
+        const data = {
+            entries: [],
+            library: [],
+            goals: [],
+        }
         if (selected === 'By Macros') {
-            const { data } = this.props;
             const { protein, carbs, fat } = this.state;
             let calories = (protein * 4) + (carbs * 4) + (fat * 9);
             const newGoals = { protein, carbs, fat, calories };
@@ -149,7 +153,6 @@ class Goals extends React.Component {
               console.error(error);
             }
         } else {
-            const { data } = this.props;
             const { proteinP, carbsP, fatP, calories } = this.state;
             if (proteinP + carbsP + fatP !== 100) return alert('When using percentages of calories, please make sure that Protein, Carbs and Fats add up to 100%. If you are looking to add macros by grams, select By Macros')
             const protein = Math.round((calories * (proteinP / 100)) / 4);

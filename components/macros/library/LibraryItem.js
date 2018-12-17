@@ -17,13 +17,13 @@ class LibraryItem extends React.Component {
                 </View>
                 <View style={styles.macros}>
                     <Text style={[styles.macronutrient, {
-                        backgroundColor: globalStyles.proteinColor,
+                        color: globalStyles.proteinColor,
                     }]}>{item.protein}g</Text>
                     <Text style={[styles.macronutrient, {
-                        backgroundColor: globalStyles.carbColor,
+                        color: globalStyles.carbColor,
                     }]}>{item.carbs}g</Text>
                     <Text style={[styles.macronutrient, {
-                        backgroundColor: globalStyles.fatColor,
+                        color: globalStyles.fatColor,
                     }]}>{item.fat}g</Text>
                 </View>
                 <View style={styles.buttonsView}>

@@ -26,9 +26,9 @@ class AddItem extends React.Component {
         return (
         <View style={styles.macro}>
             <Text style={styles.macroText}>{title}</Text>
-            <Text style={styles.macroInt}>{String(macro * servings)}</Text>
+            <Text style={styles.macroInt}>{String(parseInt(macro * servings))}</Text>
         </View>
-        )
+        );
     }
 
     deleteItem = async () => {
@@ -49,8 +49,10 @@ class AddItem extends React.Component {
     handleSubmit = async () => {
         const { item, date, data } = this.props;
         const { servings } = this.state;
-        const { protein, carbs, fat, fiber, sugar, measurement, name } = item;
-        const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement, date };
+        let { protein, carbs, fat, fiber, sugar, measurement, name, servingSize } = item;
+        protein = parseInt(protein); carbs = parseInt(carbs); fat = parseInt(fat);
+        fiber = parseInt(fiber); sugar = parseInt(sugar); servingSize = parseInt(servingSize);
+        const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement, date, servingSize };
         let newData = data;
         const newEntries = newData.entries.map((i) => {
             if (i === item) return newEntry;
@@ -92,13 +94,7 @@ class AddItem extends React.Component {
                         style={styles.servingsNumberInput}
                         value={String(servings)}
                         keyboardType='numeric'
-                        onChangeText={(s) => {
-                            if (!s.length) this.setState({servings: 0})
-                            else {
-                                const value = parseInt(s);
-                                this.setState({servings: value})
-                            }
-                        }}
+                        onChangeText={(s) => this.setState({servings: s})}
                     />
                     <Text style={styles.measurement}>{measurement}</Text>
                 </View>

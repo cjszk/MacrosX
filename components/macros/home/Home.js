@@ -40,13 +40,7 @@ class Home extends React.Component {
         if (this.props.tab === 'goals') return <View style={styles.main}><Goals/></View>
     }
 
-    handleTabWorkouts() {
-        return (
-            <View><Text>Under Construction</Text></View>
-        )
-    }
-
-    renderMacros() {
+    render() {
         if (this.props.tab !== 'home') return this.handleTabMacros();
         const dailyData = this.getCurrentDayData();
         return (
@@ -55,22 +49,6 @@ class Home extends React.Component {
             <DailyTracker dailyData={dailyData}/>
         </View>
         );
-    }
-
-    renderWorkouts() {
-        if (this.props.tab !== 'home') return this.handleTabWorkouts();
-        const dailyData = this.getCurrentDayData();
-        return (
-        <View style={styles.main}>
-            <Text>Under Construction</Text>
-        </View>
-        );
-    }
-
-    render() {
-        const { mode } = this.props;
-        if (mode === 'workouts') return this.renderWorkouts();
-        else return this.renderMacros();
     }
 }
 
@@ -88,7 +66,6 @@ const mapStateToProps = state => {
         tab: state.appState.tab,
         date: state.appState.date,
         data: state.dataReducer.data,
-        mode: state.appState.mode,
     }
 }
 

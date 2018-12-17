@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { Provider } from 'react-redux';
 import Header from './components/global/Header/';
 import Footer from './components/global/Footer/';
-import MacrosHome from './components/macros/home/Home';
+import HomeSwitch from './components/Homeswitch';
 import store from './store';
 import { saveData } from './actions/data';
 import globalStyles from './globalStyles';
@@ -26,11 +26,12 @@ export default class App extends React.Component {
   }
   
   render() {
+
     return (
       <Provider store={store}>
         <View style={styles.mainContainer}>
           <Header/>
-          <MacrosHome/>
+          <HomeSwitch/>
           <Footer/>
         </View>
       </Provider>

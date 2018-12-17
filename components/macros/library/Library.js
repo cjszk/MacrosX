@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import moment from 'moment';
 import globalStyles from '../../../globalStyles';
 import LibraryItem from './LibraryItem';
@@ -25,12 +25,12 @@ class Library extends React.Component {
                 <View style={styles.controls}>
                     <TextInput placeholder='Search' style={styles.search} value={searchQuery} onChangeText={(searchQuery) => this.setState({searchQuery})}/>
                     <TouchableOpacity onPress={() => this.props.dispatch(toggleTab('newItem'))}>
-                        <Text>New Item</Text>
+                        <Text style={styles.newItem}>New Item</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.list}>
+                <ScrollView style={styles.list}>
                     {listItems}
-                </View>
+                </ScrollView>
             </View>
         );
     }
@@ -38,7 +38,15 @@ class Library extends React.Component {
 
 const styles = {
     main: {
-
+        height: '128.5%',
+    },
+    newItem: {
+        fontSize: 18,
+        borderRadius: 4,
+        borderWidth: 0.5,
+        borderColor: globalStyles.color,
+        backgroundColor: globalStyles.colors.five,
+        padding: 7.5
     },
     controls: {
         marginTop: 20,
