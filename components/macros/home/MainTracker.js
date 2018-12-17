@@ -42,7 +42,7 @@ class MainTracker extends React.Component {
       return (
         <View style={styles.pieChart}>
           <PieChart
-              chart_wh={250}
+              chart_wh={225}
               series={[dailyMacros.protein, dailyMacros.carbs, dailyMacros.fat]}
               sliceColor={[globalStyles.proteinColor, globalStyles.carbColor, globalStyles.fatColor]}
             />
@@ -67,17 +67,17 @@ class MainTracker extends React.Component {
     return (
       <View style={styles.mainContainer}>
         <View style={styles.macrosContainer}>
-          <View style={styles.protein}>
+          <View style={styles.macro}>
               {this.createColorBar((dailyMacros.protein/goals.protein), globalStyles.proteinColor)}
               <Text style={styles.macroHeader}>Protein</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.protein)}/{goals.protein}</Text>
           </View>
-          <View style={styles.carbs}>
+          <View style={styles.macro}>
               {this.createColorBar((dailyMacros.carbs/goals.carbs), globalStyles.carbColor)}
               <Text style={styles.macroHeader}>Carbs</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.carbs)}/{goals.carbs}</Text>
           </View>
-          <View style={styles.fat}>
+          <View style={styles.macro}>
               {this.createColorBar((dailyMacros.fat/goals.fat), globalStyles.fatColor)}
               <Text style={styles.macroHeader}>Fat</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.fat)}/{goals.fat}</Text>
@@ -100,12 +100,14 @@ class MainTracker extends React.Component {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    padding: 20,
+    padding: '2.5%',
   },
   macrosContainer: {
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
+    marginTop: '5%',
+    marginBottom: '-10%'
   },
   macroHeader: {
     textAlign: 'center',
@@ -116,32 +118,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 12
   },
-  protein: {
+  macro: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    width: 100,
-    height: 50,
-    borderRadius: 4,
-    borderWidth: 0.5,
-    borderColor: globalStyles.color,
-  },
-  carbs: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    width: 100,
-    height: 50,
-    borderRadius: 4,
-    borderWidth: 0.5,
-    borderColor: globalStyles.color,
-  },
-  fat: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    width: 100,
-    height: 50,
+    width: '27.5%',
+    height: '45%',
     borderRadius: 4,
     borderWidth: 0.5,
     borderColor: globalStyles.color,
@@ -150,14 +132,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    height: 50,
+    height: '10%',
     borderRadius: 4,
     borderWidth: 0.5,
     borderColor: globalStyles.color,
-    marginTop: 20,
   },
   misc: {
-    marginTop: 10,
+    marginTop: '1%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -167,7 +148,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: '50%',
+    height: '42.5%',
+    marginTop: '5%',
   }
 });
 

@@ -177,7 +177,7 @@ class Goals extends React.Component {
             {this.renderButtons()}
             {renderMenu}
             <TouchableOpacity style={styles.submit} onPress={() => this.handleSubmit()}>
-                <Text style={styles.submitText}>Enter</Text>
+                <Text style={styles.submitText}>Submit New Goals</Text>
             </TouchableOpacity>
         </View>
         );
@@ -189,12 +189,11 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
-        marginTop: 20
     },
     header: {
         textAlign: 'center',
         fontSize: 32,
-        marginBottom: 20,
+        marginBottom: '5%',
     },
     buttonView: {
         display: 'flex',
@@ -206,7 +205,7 @@ const styles = {
         borderWidth: 0.5,
         borderColor: globalStyles.color,
         width: '35%',
-        padding: 10
+        padding: '5%'
     },
     buttonText: {
         fontSize: 24,
@@ -238,7 +237,7 @@ const styles = {
     },
     macroText: {
         alignSelf: 'center',
-        marginTop: 10,
+        marginTop: '5%',
     },
     macroInput: {
         alignSelf: 'center',
@@ -264,7 +263,6 @@ const styles = {
     },
     caloriesText: {
         alignSelf: 'center',
-        marginTop: 10,
     },
     caloriesInput: {
         alignSelf: 'center',
@@ -276,21 +274,18 @@ const styles = {
         height: 40,
         textAlign: 'center',
     },
-    showPercentView: {
-
-    },
     showPercentText: {
         textAlign: 'center'
     },
     submit: {
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: 60,
         padding: 20,
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: globalStyles.color,
-        width: '50%'
+        width: '50%',
+        backgroundColor: globalStyles.colors.two
     },
     submitText: {
         textAlign: 'center',

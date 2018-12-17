@@ -25,7 +25,8 @@ class Header extends React.Component {
     
     return (
       <View style={[styles.main, mode === 'macros' ? {backgroundColor: globalStyles.menuColor.macros} : {backgroundColor: globalStyles.menuColor.workouts}]}>
-          <TouchableOpacity onPress={() => this.decrementDate()}>
+        <View style={styles.mainContainer}>
+          <TouchableOpacity style={styles.button} onPress={() => this.decrementDate()}>
             <Icon
               name="chevron-left"
               type="fontawesome"
@@ -33,13 +34,14 @@ class Header extends React.Component {
             />
           </TouchableOpacity>
           <Text style={styles.dateText}>{renderDate}</Text>
-          <TouchableOpacity onPress={() => this.incrementDate()}>
+          <TouchableOpacity style={styles.button} onPress={() => this.incrementDate()}>
             <Icon
               name="chevron-right"
               type="fontawesome"
               size={60}
             />
           </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -48,11 +50,13 @@ class Header extends React.Component {
 
 const styles = StyleSheet.create({
   main: {
-    paddingTop: 40,
     display: 'flex',
+    height: '11%',
+  },
+  mainContainer: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    height: '11%',
+    marginTop: '6%',
   },
   dateText: {
     alignSelf: 'center',
@@ -60,6 +64,9 @@ const styles = StyleSheet.create({
     width: '70%',
     textAlign: 'center',
   },
+  button: {
+    alignSelf: 'center',
+  },  
   header: {
     color: globalStyles.color,
     fontSize: 32,

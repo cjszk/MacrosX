@@ -103,9 +103,9 @@ class Footer extends React.Component {
     }
   
     render() {
-        const { mode } = this.props;
+        const { mode, data } = this.props;
         const { items } = this.state;
-
+        if (!data) return <View></View>
         return (
             <View style={[styles.main, mode === 'macros' ? {backgroundColor: globalStyles.menuColor.macros} : {backgroundColor: globalStyles.menuColor.workouts}]}>
                 {this.renderItems()}
@@ -146,6 +146,7 @@ const mapStateToProps = state => {
   return {
       quickAdd: state.appState.quickAdd,
       mode: state.appState.mode,
+      data: state.dataReducer.data,
   }
 }
 

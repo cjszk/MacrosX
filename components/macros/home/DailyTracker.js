@@ -35,24 +35,22 @@ class DailyTracker extends React.Component {
 
 const styles = StyleSheet.create({
     main: {
-        // borderWidth: .5,
-        // borderColor: globalStyles.color,
-        height: '48.5%',
+        height: '45.5%',
         overflow: 'scroll'
     },
     button: {
-        display: 'flex',
-        justifyContent: 'center',
-        width: 200,
-        borderWidth: .5,
-        borderColor: globalStyles.color,
-        padding: 20,
         marginLeft: 'auto',
         marginRight: 'auto',
+        padding: 20,
+        borderRadius: 4,
+        borderWidth: 0.5,
+        borderColor: globalStyles.color,
+        width: '50%',
+        backgroundColor: globalStyles.colors.two
     },
     buttonText: {
         textAlign: 'center',
-        fontSize: 24,
+        fontSize: 18
     }
 });
 

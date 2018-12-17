@@ -66,7 +66,7 @@ class NewItem extends React.Component {
         return (
             <View style={styles.main}>
                 <View style={styles.mainContainer}>
-                    <Text style={styles.header}>New Library Item</Text>
+                    <Text style={styles.header}>New Food Item</Text>
                     <View style={styles.nameView}>
                         <Text style={styles.nameText}>Name: </Text>
                         <TextInput

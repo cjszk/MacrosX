@@ -8,6 +8,7 @@ const initialState = {
 }
 
 export default function appStateReducer(state=initialState, action) {
+    console.log(action);
     if (action.type === SAVE_DATA) {
         return Object.assign({}, state, {
             data: action.data
@@ -131,9 +132,9 @@ const testData = {
 storeData = async (data) => {
     try {
         console.log('rewrote data with dummy data')
-      await AsyncStorage.setItem('data', JSON.stringify(data));
+        await AsyncStorage.setItem('data', JSON.stringify(data));
     } catch (error) {
-      console.error(error);
+        console.error(error);
     }
 }
 

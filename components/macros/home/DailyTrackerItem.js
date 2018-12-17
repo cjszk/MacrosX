@@ -50,6 +50,7 @@ const styles = {
         // backgroundColor: 'limegreen',
         borderWidth: 0.5,
         borderColor: globalStyles.color,
+        padding: '1%',
     },
     flexRow: {
         display: 'flex',
@@ -58,23 +59,20 @@ const styles = {
     },
     name: {
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         flexDirection: 'column',
         width: '40%',
-        paddingTop: 5,
-        paddingBottom: 5,
-        paddingLeft: 5,
     },
     textName: {
         fontSize: 16,
-        marginBottom: 2,
-        marginTop: 2,
+        marginBottom: '1%',
+        marginTop: '1%',
     },
     textServings: {
-        marginBottom: 2,
-        marginTop: 2,
-        marginLeft: 5,
-        marginRight: 5,
+        marginBottom: '1%',
+        marginTop: '1%',
+        marginLeft: '5%',
+        marginRight: '5%',
     },
     macros: {
         justifyContent: 'center',

@@ -45,7 +45,7 @@ const styles = {
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: globalStyles.color,
-        backgroundColor: globalStyles.colors.five,
+        backgroundColor: globalStyles.colors.two,
         padding: 7.5
     },
     controls: {

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage, View, TouchableOpacity, Text, TextInput } from 'react-native';
 import { toggleTab } from '../actions/appState';
+import { saveData } from '../actions/data';
 
 class Goals extends React.Component {
     constructor(props) {
@@ -135,7 +136,7 @@ class Goals extends React.Component {
 
     handleSubmit = async () => {
         const { selected } = this.state;
-        const data = {
+        let data = {
             entries: [],
             library: [],
             goals: [],
@@ -146,8 +147,9 @@ class Goals extends React.Component {
             const newGoals = { protein, carbs, fat, calories };
             let newData = data;
             newData.goals = newGoals;
+            console.log(this.props.data);
             try {
-              await AsyncStorage.setItem('data', JSON.stringify(newData));
+              await AsyncStorage.setItem('data', JSON.stringify(newData)).then(() => this.props.dispatch(saveData(newData)));
               this.props.dispatch(toggleTab('home'))
             } catch (error) {
               console.error(error);
@@ -162,13 +164,13 @@ class Goals extends React.Component {
             let newData = data;
             newData.goals = newGoals;
             try {
-              await AsyncStorage.setItem('data', JSON.stringify(newData));
+              console.log('this ran')
+              await AsyncStorage.setItem('data', JSON.stringify(newData)).then(() => this.props.dispatch(saveData(newData)));
               this.props.dispatch(toggleTab('home'))
             } catch (error) {
               console.error(error);
             }
         }
-
     }
 
     render() {
@@ -180,7 +182,7 @@ class Goals extends React.Component {
             {this.renderButtons()}
             {renderMenu}
             <TouchableOpacity style={styles.submit} onPress={() => this.handleSubmit()}>
-                <Text style={styles.submitText}>Enter</Text>
+                <Text style={styles.submitText}>Let's get Started!</Text>
             </TouchableOpacity>
         </View>
         );
@@ -192,12 +194,11 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
-        marginTop: 20
     },
     header: {
         textAlign: 'center',
         fontSize: 32,
-        marginBottom: 20,
+        marginBottom: '5%',
     },
     buttonView: {
         display: 'flex',
@@ -209,7 +210,7 @@ const styles = {
         borderWidth: 0.5,
         borderColor: globalStyles.color,
         width: '35%',
-        padding: 10
+        padding: '5%'
     },
     buttonText: {
         fontSize: 24,
@@ -241,7 +242,7 @@ const styles = {
     },
     macroText: {
         alignSelf: 'center',
-        marginTop: 10,
+        marginTop: '5%',
     },
     macroInput: {
         alignSelf: 'center',
@@ -267,7 +268,6 @@ const styles = {
     },
     caloriesText: {
         alignSelf: 'center',
-        marginTop: 10,
     },
     caloriesInput: {
         alignSelf: 'center',
@@ -279,21 +279,18 @@ const styles = {
         height: 40,
         textAlign: 'center',
     },
-    showPercentView: {
-
-    },
     showPercentText: {
         textAlign: 'center'
     },
     submit: {
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: 60,
         padding: 20,
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: globalStyles.color,
-        width: '50%'
+        width: '50%',
+        backgroundColor: globalStyles.colors.two
     },
     submitText: {
         textAlign: 'center',

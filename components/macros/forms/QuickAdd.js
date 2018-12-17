@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { AsyncStorage, Text, TouchableWithoutFeedback, View, TouchableOpacity, TextInput } from 'react-native';
 import { toggleTab } from '../../../actions/appState';
 import globalStyles from '../../../globalStyles';
 
