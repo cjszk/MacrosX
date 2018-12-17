@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, AsyncStorage, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { Provider } from 'react-redux';
 import Header from './components/global/Header/';
 import Footer from './components/global/Footer/';
@@ -29,13 +29,11 @@ export default class App extends React.Component {
 
     return (
       <Provider store={store}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={styles.mainContainer}>
-            <Header/>
-            <HomeSwitch/>
-            <Footer/>
-          </View>
-        </TouchableWithoutFeedback>
+        <View style={styles.mainContainer}>
+          <Header/>
+          <HomeSwitch/>
+          <Footer/>
+        </View>
       </Provider>
     );
   }

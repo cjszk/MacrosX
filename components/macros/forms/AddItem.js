@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { AsyncStorage, StyleSheet, Text, View, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { toggleTab } from '../../../actions/appState';
 import globalStyles from '../../../globalStyles';
 
@@ -9,12 +9,12 @@ class AddItem extends React.Component {
         super(props);
         this.state = {
             name: '',
-            protein: 0,
-            carbs: 0,
-            fat: 0,
-            fiber: 0,
-            sugar: 0,
-            servings: 1,
+            protein: '',
+            carbs: '',
+            fat: '',
+            fiber: '',
+            sugar: '',
+            servings: '',
             measurement: '',
         }
     }
@@ -25,7 +25,7 @@ class AddItem extends React.Component {
         return (
         <View style={styles.macro}>
             <Text style={styles.macroText}>{title}</Text>
-            <Text style={styles.macroInt}>{String(macro * servings)}</Text>
+            <Text style={styles.macroInt}>{String(parseInt(macro * servings))}</Text>
         </View>
         )
     }
@@ -57,20 +57,10 @@ class AddItem extends React.Component {
         const { protein, carbs, fat, fiber, sugar, measurement, name, servingSize } = item;
 
         return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.main}>
                 <View style={styles.mainContainer}>
                     <Text style={styles.header}>{name}</Text>
-                </View>
-                <View style={styles.nutrientsContainer}>
-                    <View style={styles.macroContainer}>
-                        {this.renderNutrient(protein, 'protein')}
-                        {this.renderNutrient(carbs, 'carbs')}
-                        {this.renderNutrient(fat, 'fat')}
-                    </View>
-                    <View style={styles.miscContainer}>
-                        {this.renderNutrient(fiber, 'fiber')}
-                        {this.renderNutrient(sugar, 'sugar')}
-                    </View>
                 </View>
                 <View style={styles.servingsContainer}>
                     <Text style={styles.servingsText}>Servings: </Text>
@@ -78,15 +68,26 @@ class AddItem extends React.Component {
                         style={styles.servingsNumberInput}
                         value={String(servings)}
                         keyboardType='numeric'
+                        placeholder='0'
                         maxLength={4}
                         onChangeText={(s) => this.setState({servings: s})}
                     />
                     <Text style={styles.measurement}>{servingSize * servings} {measurement}</Text>
                 </View>
+                <View style={styles.nutrientsContainer}>
+                    <View style={styles.macroContainer}>
+                        {this.renderNutrient(protein, 'protein')}
+                        {this.renderNutrient(carbs, 'carbs')}
+                        {this.renderNutrient(fat, 'fat')}
+                        {this.renderNutrient(fiber, 'fiber')}
+                        {this.renderNutrient(sugar, 'sugar')}
+                    </View>
+                </View>
                 <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit()}>
                     <Text style={styles.submitText}>Enter</Text>
                 </TouchableOpacity>
             </View>
+        </TouchableWithoutFeedback>
         )
     }
 }
@@ -116,18 +117,19 @@ const styles = StyleSheet.create({
     },
     macroContainer: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-around',
         padding: 10,
     },
     macro: {
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'space-around'
     },
     macroText: {
         alignSelf: 'center',
-        marginTop: 10,
+        marginTop: '1%',
+        width: '25%'
     },
     macroInt: {
         alignSelf: 'center',
@@ -135,13 +137,6 @@ const styles = StyleSheet.create({
         width: 60,
         height: 40,
         textAlign: 'center',
-    },
-    miscContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginLeft: '16.67%',
-        marginRight: '16.67%',
     },
     servingsContainer: {
         display: 'flex',

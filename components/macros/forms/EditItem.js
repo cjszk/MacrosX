@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { AsyncStorage, Text, View, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { toggleTab } from '../../../actions/appState';
 import globalStyles from '../../../globalStyles';
@@ -78,6 +78,7 @@ class NewItem extends React.Component {
     render() {
         const { name, servingSize, measurement } = this.state;
         return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.main}>
                 <View style={styles.mainContainer}>
                     <Text style={styles.header}>{name}</Text>
@@ -96,8 +97,6 @@ class NewItem extends React.Component {
                         {this.renderNutrient('protein')}
                         {this.renderNutrient('carbs')}
                         {this.renderNutrient('fat')}
-                    </View>
-                    <View style={styles.miscContainer}>
                         {this.renderNutrient('fiber')}
                         {this.renderNutrient('sugar')}
                     </View>
@@ -126,6 +125,7 @@ class NewItem extends React.Component {
                     </TouchableOpacity>
                 </View>
             </View>
+        </TouchableWithoutFeedback>
         )
     }
 }
@@ -175,18 +175,19 @@ const styles = {
     },
     macroContainer: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-around',
         padding: 10,
     },
     macro: {
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'space-around'
     },
     macroText: {
         alignSelf: 'center',
-        marginTop: 10,
+        marginTop: '1%',
+        width: '25%'
     },
     macroInput: {
         alignSelf: 'center',

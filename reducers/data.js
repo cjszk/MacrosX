@@ -8,7 +8,6 @@ const initialState = {
 }
 
 export default function appStateReducer(state=initialState, action) {
-    console.log(action);
     if (action.type === SAVE_DATA) {
         return Object.assign({}, state, {
             data: action.data

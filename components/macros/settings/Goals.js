@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, View, TouchableOpacity, Text, TextInput } from 'react-native';
+import { AsyncStorage, View, TouchableOpacity, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { toggleTab } from '../../../actions/appState';
 
 class Goals extends React.Component {
@@ -172,14 +172,16 @@ class Goals extends React.Component {
         let renderMenu = this.renderByMacros();
         if (this.state.selected === 'By Calories') renderMenu = this.renderByCalories();
         return (
-        <View style={styles.main}>
-            <Text style={styles.header}>Set Goals</Text>
-            {this.renderButtons()}
-            {renderMenu}
-            <TouchableOpacity style={styles.submit} onPress={() => this.handleSubmit()}>
-                <Text style={styles.submitText}>Submit New Goals</Text>
-            </TouchableOpacity>
-        </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.main}>
+                <Text style={styles.header}>Set Goals</Text>
+                {this.renderButtons()}
+                {renderMenu}
+                <TouchableOpacity style={styles.submit} onPress={() => this.handleSubmit()}>
+                    <Text style={styles.submitText}>Submit New Goals</Text>
+                </TouchableOpacity>
+            </View>
+        </TouchableWithoutFeedback>
         );
     }
 }

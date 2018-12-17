@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { AsyncStorage, Text, View, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { toggleTab } from '../../../actions/appState';
 import globalStyles from '../../../globalStyles';
@@ -10,11 +10,11 @@ class AddItem extends React.Component {
         super(props);
         this.state = {
             name: '',
-            protein: 0,
-            carbs: 0,
-            fat: 0,
-            fiber: 0,
-            sugar: 0,
+            protein: '',
+            carbs: '',
+            fat: '',
+            fiber: '',
+            sugar: '',
             servings: this.props.item.servings,
             measurement: '',
         }
@@ -73,20 +73,10 @@ class AddItem extends React.Component {
         const { protein, carbs, fat, fiber, sugar, measurement, name } = item;
 
         return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.main}>
                 <View style={styles.mainContainer}>
                     <Text style={styles.header}>{name}</Text>
-                </View>
-                <View style={styles.nutrientsContainer}>
-                    <View style={styles.macroContainer}>
-                        {this.renderNutrient(protein, 'protein')}
-                        {this.renderNutrient(carbs, 'carbs')}
-                        {this.renderNutrient(fat, 'fat')}
-                    </View>
-                    <View style={styles.miscContainer}>
-                        {this.renderNutrient(fiber, 'fiber')}
-                        {this.renderNutrient(sugar, 'sugar')}
-                    </View>
                 </View>
                 <View style={styles.servingsContainer}>
                     <Text style={styles.servingsText}>Servings: </Text>
@@ -98,6 +88,15 @@ class AddItem extends React.Component {
                     />
                     <Text style={styles.measurement}>{measurement}</Text>
                 </View>
+                <View style={styles.nutrientsContainer}>
+                    <View style={styles.macroContainer}>
+                        {this.renderNutrient(protein, 'protein')}
+                        {this.renderNutrient(carbs, 'carbs')}
+                        {this.renderNutrient(fat, 'fat')}
+                        {this.renderNutrient(fiber, 'fiber')}
+                        {this.renderNutrient(sugar, 'sugar')}
+                    </View>
+                </View>
                 <View style={styles.buttons}>
                     <TouchableOpacity style={styles.delete}onPress={() => this.deleteItem()}>
                         <Icon name='trash' type='entypo' size={60}/>
@@ -107,6 +106,7 @@ class AddItem extends React.Component {
                     </TouchableOpacity>
                 </View>
             </View>
+        </TouchableWithoutFeedback>
         )
     }
 }
@@ -136,18 +136,19 @@ const styles = {
     },
     macroContainer: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-around',
         padding: 10,
     },
     macro: {
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'space-around'
     },
     macroText: {
         alignSelf: 'center',
-        marginTop: 10,
+        marginTop: '1%',
+        width: '25%'
     },
     macroInt: {
         alignSelf: 'center',
@@ -155,13 +156,6 @@ const styles = {
         width: 60,
         height: 40,
         textAlign: 'center',
-    },
-    miscContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginLeft: '16.67%',
-        marginRight: '16.67%',
     },
     servingsContainer: {
         display: 'flex',

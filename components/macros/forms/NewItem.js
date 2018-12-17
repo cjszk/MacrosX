@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { AsyncStorage, Text, View, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { toggleTab } from '../../../actions/appState';
 import globalStyles from '../../../globalStyles';
 
@@ -9,27 +9,30 @@ class NewItem extends React.Component {
         super(props);
         this.state = {
             name: '',
-            protein: 0,
-            carbs: 0,
-            fat: 0,
-            fiber: 0,
-            sugar: 0,
-            servingSize: 1,
+            protein: '',
+            carbs: '',
+            fat: '',
+            fiber: '',
+            sugar: '',
+            servingSize: '',
             measurement: '',
         }
     }
 
-    renderNutrient(macro, key) {
+    renderNutrient(macro, key, optional=null) {
+        let optionalStyle;
+        if (optional) optionalStyle = {color: 'grey'}
         const title = key.split('')[0].toUpperCase() + key.split('').slice(1).join('');
         const macroValue = this.state[key];
         return (
         <View style={styles.macro}>
-            <Text style={styles.macroText}>{title}</Text>
+            <Text style={[styles.macroText, optionalStyle]}>{title} {optional}</Text>
             <TextInput
                 value={String(macroValue)}
                 style={styles.macroInput}
                 keyboardType='numeric'
                 maxLength={3}
+                placeholder='0'
                 onChangeText={(n) => {
                     this.setState({[key]: n})
                 }}/>
@@ -64,6 +67,7 @@ class NewItem extends React.Component {
     render() {
         const { name, protein, carbs, fat, fiber, sugar, servingSize, measurement } = this.state;
         return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.main}>
                 <View style={styles.mainContainer}>
                     <Text style={styles.header}>New Food Item</Text>
@@ -82,10 +86,8 @@ class NewItem extends React.Component {
                         {this.renderNutrient(protein, 'protein')}
                         {this.renderNutrient(carbs, 'carbs')}
                         {this.renderNutrient(fat, 'fat')}
-                    </View>
-                    <View style={styles.miscContainer}>
-                        {this.renderNutrient(fiber, 'fiber')}
-                        {this.renderNutrient(sugar, 'sugar')}
+                        {this.renderNutrient(fiber, 'fiber', '(optional)')}
+                        {this.renderNutrient(sugar, 'sugar', '(optional)')}
                     </View>
                 </View>
                 <View style={styles.servingsContainer}>
@@ -94,6 +96,7 @@ class NewItem extends React.Component {
                         style={styles.servingsNumberInput}
                         value={String(servingSize)}
                         keyboardType='numeric'
+                        placeholder='1'
                         onChangeText={(s) => {
                             this.setState({servingSize: s})
                         }}
@@ -109,6 +112,7 @@ class NewItem extends React.Component {
                     <Text style={styles.submitText}>Enter</Text>
                 </TouchableOpacity>
             </View>
+        </TouchableWithoutFeedback>
         )
     }
 }
@@ -158,18 +162,19 @@ const styles = {
     },
     macroContainer: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-around',
         padding: 10,
     },
     macro: {
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'space-around'
     },
     macroText: {
         alignSelf: 'center',
-        marginTop: 10,
+        marginTop: '1%',
+        width: '25%'
     },
     macroInput: {
         alignSelf: 'center',
@@ -180,13 +185,6 @@ const styles = {
         width: 60,
         height: 40,
         textAlign: 'center',
-    },
-    miscContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginLeft: '16.67%',
-        marginRight: '16.67%',
     },
     servingsContainer: {
         display: 'flex',
