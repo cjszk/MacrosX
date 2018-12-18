@@ -111,9 +111,11 @@ class NewItem extends React.Component {
                         onChangeText={(m) => this.setState({measurement: m})}
                     />
                 </View>
-                <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit()}>
-                    <Text style={styles.submitText}>Enter</Text>
-                </TouchableOpacity>
+                <View style={styles.submitContainer}>
+                    <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit()}>
+                        <Text style={styles.submitText}>Enter</Text>
+                    </TouchableOpacity>
+                </View>
             </KeyboardAwareScrollView>
         </TouchableWithoutFeedback>
         )
@@ -129,9 +131,8 @@ const styles = {
         justifyContent: 'space-between',
         marginLeft: '10%',
         marginRight: '10%',
-        marginTop: 10,
+        height: '15%',
         padding: 10,
-        height: '20%'
     },
     header: {
         fontSize: 32,
@@ -161,7 +162,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
-        padding: 10,
+        height: '55%',
     },
     macroContainer: {
         display: 'flex',
@@ -180,7 +181,6 @@ const styles = {
         width: '25%'
     },
     macroInput: {
-        alignSelf: 'center',
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: globalStyles.color,
@@ -194,6 +194,7 @@ const styles = {
         flexDirection: 'row',
         justifyContent: 'center',
         padding: 10,
+        height: '20%'
     },
     servingsText: {
         fontSize: 18,
@@ -205,13 +206,22 @@ const styles = {
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: globalStyles.color,
-        marginTop: 10,
         marginLeft: 5,
         marginRight: 5,
         width: 60,
-        height: 40,
+        height: '80%',
         textAlign: 'center',
-
+    },
+    servingsSizeInput: {
+        alignSelf: 'center',
+        borderRadius: 4,
+        borderWidth: 0.5,
+        borderColor: globalStyles.color,
+        marginLeft: 5,
+        marginRight: 5,
+        width: 60,
+        height: '80%',
+        textAlign: 'center',
     },
     servingsMeasurementInput: {
         alignSelf: 'center',
@@ -227,10 +237,12 @@ const styles = {
         marginRight: 5,
         width: 120,
     },
+    submitContainer: {
+        height: '15%',
+    },
     submit: {
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: '2%',
         padding: 20,
         borderRadius: 4,
         borderWidth: 0.5,

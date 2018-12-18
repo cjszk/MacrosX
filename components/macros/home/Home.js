@@ -4,6 +4,7 @@ import { View, Text } from 'react-native';
 import moment from 'moment';
 import MainTracker from './MainTracker';
 import QuickAdd from '../forms/QuickAdd';
+import AddUsdaItem from '../forms/AddUsdaItem';
 import DailyTracker from './DailyTracker';
 import Library from '../library/Library';
 import NewItem from '../forms/NewItem';
@@ -33,6 +34,7 @@ class Home extends React.Component {
         if (this.props.tab === 'library') return <View style={styles.main}><Library/></View>;
         if (this.props.tab === 'newItem') return <View style={styles.main}><NewItem/></View>;
         if (this.props.tab === 'addItem') return <View style={styles.main}><AddItem/></View>;
+        if (this.props.tab === 'addUsdaItem') return <View style={styles.main}><AddUsdaItem/></View>
         if (this.props.tab === 'editTrackedItem') return <View style={styles.main}><EditTrackedItem/></View>;
         if (this.props.tab === 'editItem') return <View style={styles.main}><EditItem/></View>;
         if (this.props.tab === 'settings') return <View style={styles.main}><Settings/></View>

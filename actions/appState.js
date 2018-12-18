@@ -16,6 +16,12 @@ export const addItem = (item) => ({
     item
 });
 
+export const ADD_USDA_ITEM = 'ADD_USDA_ITEM';
+export const addUsdaItem = (item) => ({
+    type: ADD_USDA_ITEM,
+    item
+})
+
 export const EDIT_TRACKED_ITEM = 'EDIT_TRACKED_ITEM';
 export const editTrackedItem = (item) => ({
     type: EDIT_TRACKED_ITEM,

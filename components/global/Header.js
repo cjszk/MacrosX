@@ -53,12 +53,14 @@ class Header extends React.Component {
 const styles = StyleSheet.create({
   main: {
     display: 'flex',
-    height: '12%',
+    // height: '12%',
   },
   mainContainer: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: '6%',
+    paddingTop: '3.5%',
+    // marginTop: '4%',
+    alignContent: 'flex-end',
   },
   dateText: {
     alignSelf: 'center',
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    alignSelf: 'center',
+    alignSelf: 'flex-end',
   },  
   header: {
     color: globalStyles.color,

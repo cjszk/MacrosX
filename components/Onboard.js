@@ -4,6 +4,7 @@ import { AsyncStorage, View, TouchableOpacity, Text, TextInput, TouchableWithout
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { toggleTab } from '../actions/appState';
 import { saveData } from '../actions/data';
+import moment from 'moment';
 
 class Goals extends React.Component {
     constructor(props) {
@@ -139,7 +140,44 @@ class Goals extends React.Component {
         const { selected } = this.state;
         let data = {
             entries: [],
-            library: [],
+            library: [
+                {
+                    date: moment().format(),
+                    name: 'Apple',
+                    protein: 0.5,
+                    carbs: 25,
+                    fat: 0.3,
+                    fiber: 4.4,
+                    sugar: 19,
+                    servings: 1.0,
+                    servingSize: 1,
+                    measurement: 'medium'
+                },
+                {
+                    date: moment().format(),
+                    name: 'Almonds',
+                    protein: 3,
+                    carbs: 3,
+                    fat: 6,
+                    fiber: 1,
+                    sugar: 0,
+                    servings: 1.0,
+                    servingSize: 10,
+                    measurement: 'pieces'
+                },
+                {
+                    date: moment().format(),
+                    name: 'ON Gold Standard Whey Protein',
+                    protein: 24,
+                    carbs: 4,
+                    fat: 1,
+                    fiber: 0,
+                    sugar: 2,
+                    servings: 1.0,
+                    servingSize: 31,
+                    measurement: 'grams'
+                },
+            ],
             goals: [],
         }
         if (selected === 'By Macros') {

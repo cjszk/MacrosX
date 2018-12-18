@@ -125,6 +125,17 @@ const testData = {
             servings: 1.0,
             measurement: 'grams'
         },
+        {
+            date: moment().format(),
+            name: 'Apple',
+            protein: 0.5,
+            carbs: 25,
+            fat: 0.3,
+            fiber: 0,
+            sugar: 0,
+            servings: 1.0,
+            measurement: 'medium sized'
+        },
     ],
 }
 

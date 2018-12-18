@@ -105,7 +105,7 @@ class Footer extends React.Component {
     render() {
         const { mode, data } = this.props;
         const { items } = this.state;
-        if (!data) return <View></View>
+        if (!data) return <View style={[styles.main, {backgroundColor: globalStyles.menuColor.macros, width: '100%'}]}></View>
         return (
             <View style={[styles.main, mode === 'macros' ? {backgroundColor: globalStyles.menuColor.macros} : {backgroundColor: globalStyles.menuColor.workouts}]}>
                 {this.renderItems()}

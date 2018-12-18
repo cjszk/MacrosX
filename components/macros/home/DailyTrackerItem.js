@@ -38,6 +38,7 @@ class DailyTrackerItem extends React.Component {
                         name="edit"
                         type="antdesign"
                         size={35}
+                        color={globalStyles.colors.listIcon}
                     />
                 </TouchableOpacity>
             </View>

@@ -21,13 +21,13 @@ class AddItem extends React.Component {
         }
     }
 
-    renderNutrient(macro, key) {
+    renderNutrient(macro, key, color='#000') {
         const title = key.split('')[0].toUpperCase() + key.split('').slice(1).join('');
         const { servings } = this.state;
         return (
         <View style={styles.macro}>
             <Text style={styles.macroText}>{title}</Text>
-            <Text style={styles.macroInt}>{String(parseInt(macro * servings))}</Text>
+            <Text style={[styles.macroInt, {color}]}>{String(parseInt(macro * servings))}</Text>
         </View>
         );
     }
@@ -84,6 +84,7 @@ class AddItem extends React.Component {
                 <View style={styles.servingsContainer}>
                     <Text style={styles.servingsText}>Servings: </Text>
                     <TextInput
+                        autoFocus={true}
                         style={styles.servingsNumberInput}
                         value={String(servings)}
                         keyboardType='numeric'
@@ -93,9 +94,9 @@ class AddItem extends React.Component {
                 </View>
                 <View style={styles.nutrientsContainer}>
                     <View style={styles.macroContainer}>
-                        {this.renderNutrient(protein, 'protein')}
-                        {this.renderNutrient(carbs, 'carbs')}
-                        {this.renderNutrient(fat, 'fat')}
+                        {this.renderNutrient(protein, 'protein', globalStyles.proteinColor)}
+                        {this.renderNutrient(carbs, 'carbs', globalStyles.carbColor)}
+                        {this.renderNutrient(fat, 'fat', globalStyles.fatColor)}
                         {this.renderNutrient(fiber, 'fiber')}
                         {this.renderNutrient(sugar, 'sugar')}
                     </View>

@@ -3,41 +3,44 @@ import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { Icon } from 'react-native-elements';
 import globalStyles from '../../../globalStyles';
-import { addItem, editLibraryItem } from '../../../actions/appState';
+import { addUsdaItem } from '../../../actions/appState';
 
-class LibraryItem extends React.Component {
+class USDAItem extends React.Component {
 
     render() {
         const { item } = this.props;
+        // name, servingSize, measurement, protein, carbs, fat
+        const { name } = item.desc;
+        let proteinPerGram, carbsPerGram, fatPerGram, servingSize, measurement;
+        item.nutrients.forEach((nutrient) => {
+            if (nutrient.measures.length === 0) return null;
+            measurement = nutrient.measures[0].eunit;
+            if (nutrient.name === "Protein") proteinPerGram = (nutrient.measures[0].value / nutrient.measures[0].eqv);
+            if (nutrient.name === "Carbohydrate, by difference") carbsPerGram = (nutrient.measures[0].value / nutrient.measures[0].eqv);
+            if (nutrient.name === "Total lipid (fat)") fatPerGram = (nutrient.measures[0].value / nutrient.measures[0].eqv);
+        });
+
         return (
             <View key={item.date} style={styles.main}>
                 <View style={styles.name}>
-                    <Text style={styles.nameText}>{item.name}</Text>
-                    <Text style={styles.servingSizeText}>{item.servingSize} {item.measurement}</Text>
+                    <Text style={styles.nameText}>{name.split('').slice(0, 40).join('')}</Text>
+                    <Text style={styles.servingSizeText}>100 {measurement}</Text>
                 </View>
                 <View style={styles.macros}>
                     <Text style={[styles.macronutrient, {
                         color: globalStyles.proteinColor,
-                    }]}>{item.protein}g</Text>
+                    }]}>{parseInt(proteinPerGram * 1000) / 10}g</Text>
                     <Text style={[styles.macronutrient, {
                         color: globalStyles.carbColor,
-                    }]}>{item.carbs}g</Text>
+                    }]}>{parseInt(carbsPerGram * 1000) / 10}g</Text>
                     <Text style={[styles.macronutrient, {
                         color: globalStyles.fatColor,
-                    }]}>{item.fat}g</Text>
+                    }]}>{parseInt(fatPerGram * 1000) / 10}g</Text>
                 </View>
                 <View style={styles.buttonsView}>
-                    <TouchableOpacity style={styles.icons} onPress={() => this.props.dispatch(addItem(item))}>
+                    <TouchableOpacity style={styles.icons} onPress={() => this.props.dispatch(addUsdaItem(item))}>
                         <Icon
                             name="add"
-                            type="antdesign"
-                            size={35}
-                            color={globalStyles.colors.listIcon}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.icons} onPress={() => this.props.dispatch(editLibraryItem(item))}>
-                        <Icon
-                            name="edit"
                             type="antdesign"
                             size={35}
                             color={globalStyles.colors.listIcon}
@@ -62,7 +65,7 @@ const styles = {
         borderColor: globalStyles.colors.four,
     },
     name: {
-        width: '40%',
+        width: '52.5%',
     },
     nameText: {
         fontSize: 14
@@ -88,7 +91,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '25%',
+        width: '12.5%',
     }
 }
 
@@ -99,4 +102,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(LibraryItem);
+export default connect(mapStateToProps)(USDAItem);

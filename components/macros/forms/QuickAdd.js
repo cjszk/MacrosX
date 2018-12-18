@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, Text, TouchableWithoutFeedback, View, TouchableOpacity, TextInput, Keyboard } from 'react-native';
+import { AsyncStorage, Text, TouchableWithoutFeedback, View, TouchableOpacity, TextInput, Keyboard, } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { toggleTab } from '../../../actions/appState';
 import globalStyles from '../../../globalStyles';
@@ -121,9 +121,11 @@ class QuickAdd extends React.Component {
                         />
                     </View>
                 </View>
-                <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit()}>
-                    <Text style={styles.submitText}>Enter</Text>
-                </TouchableOpacity>
+                <View style={styles.submitContainer}>
+                    <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit()}>
+                        <Text style={styles.submitText}>Enter</Text>
+                    </TouchableOpacity>
+                </View>
             </KeyboardAwareScrollView>
         </TouchableWithoutFeedback>
         )
@@ -139,7 +141,7 @@ const styles = {
         justifyContent: 'space-between',
         marginLeft: '10%',
         marginRight: '10%',
-        marginTop: '1%',
+        height: '15%',
         padding: 10,
     },
     header: {
@@ -170,7 +172,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
-        padding: 10,
+        height: '49.25%',
     },
     macroContainer: {
         display: 'flex',
@@ -202,6 +204,7 @@ const styles = {
         flexDirection: 'column',
         justifyContent: 'center',
         padding: 10,
+        height: '20%'
     },
     servingsContainerSecondary: {
         display: 'flex',
@@ -218,24 +221,21 @@ const styles = {
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: globalStyles.color,
-        marginTop: 10,
         marginLeft: 5,
         marginRight: 5,
         width: 60,
-        height: 40,
+        height: '80%',
         textAlign: 'center',
-
     },
     servingsSizeInput: {
         alignSelf: 'center',
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: globalStyles.color,
-        marginTop: 10,
         marginLeft: 5,
         marginRight: 5,
         width: 60,
-        height: 40,
+        height: '80%',
         textAlign: 'center',
 
     },
@@ -244,19 +244,19 @@ const styles = {
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: globalStyles.color,
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingRight: 20,
-        paddingLeft: 20,
-        marginTop: 10,
+        paddingRight: 10,
+        paddingLeft: 10,
         marginLeft: 5,
         marginRight: 5,
+        height: '80%',
         width: 120,
+    },
+    submitContainer: {
+        height: '15%',
     },
     submit: {
         marginLeft: 'auto',
         marginRight: 'auto',
-        // marginTop: '2%',
         padding: 20,
         borderRadius: 4,
         borderWidth: 0.5,

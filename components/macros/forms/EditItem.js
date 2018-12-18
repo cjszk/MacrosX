@@ -173,7 +173,8 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
-        padding: 10,
+        // padding: 10,
+        height: '50%',
     },
     macroContainer: {
         display: 'flex',

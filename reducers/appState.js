@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { DECREMENT_DATE, INCREMENT_DATE, TOGGLE_TAB, ADD_ITEM, EDIT_TRACKED_ITEM, EDIT_LIBRARY_ITEM, TOGGLE_MODE } from "../actions/appState";
+import { DECREMENT_DATE, INCREMENT_DATE, TOGGLE_TAB, ADD_ITEM, EDIT_TRACKED_ITEM, EDIT_LIBRARY_ITEM, TOGGLE_MODE, ADD_USDA_ITEM } from "../actions/appState";
 
 const initialState = {
     tab: 'home',
@@ -24,6 +24,12 @@ export default function appStateReducer(state=initialState, action) {
         return Object.assign({}, state, {
             targetItem: action.item,
             tab: 'addItem'
+        });
+    }
+    if (action.type === ADD_USDA_ITEM) {
+        return Object.assign({}, state, {
+            targetItem: action.item,
+            tab: 'addUsdaItem'
         });
     }
     if (action.type === EDIT_TRACKED_ITEM) {

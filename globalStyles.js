@@ -10,24 +10,19 @@ const colors =  {
     three: '#ECECEC',
     four: '#90CCF4',
     five: '#5DA2D5',
+    listIcon: '#26B'
 };
 
 const colorsSecondary = {
-    one: '#314455',
-    two: '#644E5B',
-    three: '#97AABD',
-    four: '#9E5A63',
-    five: '#C96567',
+    one: '#AFD275',
+    two: '#C2B9B0',
+    three: '#C2CAD0',
+    four: '#7E685A',
+    five: '#E7717D',
 };
 
 export default globalStyles = {
-    colors: {
-        one: colors.one,
-        two: colors.two,
-        three: colors.three,
-        four: colors.four,
-        five: colors.five,
-    },
+    colors,
     color: '#000',
     backgroundColor: colors.three,
     // Because of pie chart, must use only colors by #XXXXXX
