@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage, View, TouchableOpacity, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { toggleTab } from '../../../actions/appState';
 
 class Goals extends React.Component {
@@ -12,9 +13,9 @@ class Goals extends React.Component {
             carbs: this.props.data.goals.carbs,
             fat: this.props.data.goals.fat,
             calories: this.props.data.goals.calories,
-            proteinP: 0,
-            carbsP: 0,
-            fatP: 0,
+            proteinP: '',
+            carbsP: '',
+            fatP: '',
         }
     }
 
@@ -151,7 +152,7 @@ class Goals extends React.Component {
         } else {
             const { data } = this.props;
             const { proteinP, carbsP, fatP, calories } = this.state;
-            if (proteinP + carbsP + fatP !== 100) return alert('When using percentages of calories, please make sure that Protein, Carbs and Fats add up to 100%. If you are looking to add macros by grams, select By Macros')
+            if (proteinP + carbsP + fatP !== 100) return alert('When using percentages of calories, please make sure that Protein, Carbs and Fats add up to 100% and no fields are left blank. If you are looking to add macros by grams, select By Macros')
             const protein = Math.round((calories * (proteinP / 100)) / 4);
             const carbs = Math.round((calories * (carbsP / 100)) / 4);
             const fat = Math.round((calories * (fatP / 100)) / 9);
@@ -173,14 +174,14 @@ class Goals extends React.Component {
         if (this.state.selected === 'By Calories') renderMenu = this.renderByCalories();
         return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.main}>
+            <KeyboardAwareScrollView extraScrollHeight={100} style={styles.main}>
                 <Text style={styles.header}>Set Goals</Text>
                 {this.renderButtons()}
                 {renderMenu}
                 <TouchableOpacity style={styles.submit} onPress={() => this.handleSubmit()}>
                     <Text style={styles.submitText}>Submit New Goals</Text>
                 </TouchableOpacity>
-            </View>
+            </KeyboardAwareScrollView>
         </TouchableWithoutFeedback>
         );
     }
@@ -190,11 +191,12 @@ const styles = {
     main: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-around',
+        height: '100%'
     },
     header: {
         textAlign: 'center',
         fontSize: 32,
+        marginTop: '5%',
         marginBottom: '5%',
     },
     buttonView: {

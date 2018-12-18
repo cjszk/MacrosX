@@ -31,6 +31,7 @@ class Header extends React.Component {
               name="chevron-left"
               type="fontawesome"
               size={60}
+              color="#000"
             />
           </TouchableOpacity>
           <Text style={styles.dateText}>{renderDate}</Text>
@@ -39,6 +40,7 @@ class Header extends React.Component {
               name="chevron-right"
               type="fontawesome"
               size={60}
+              color="#000"
             />
           </TouchableOpacity>
         </View>
@@ -51,7 +53,7 @@ class Header extends React.Component {
 const styles = StyleSheet.create({
   main: {
     display: 'flex',
-    height: '11%',
+    height: '12%',
   },
   mainContainer: {
     justifyContent: 'space-between',

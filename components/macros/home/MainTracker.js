@@ -36,6 +36,11 @@ class MainTracker extends React.Component {
     };
     return (<Text style={{height: '100%', width, position: 'absolute', left: 0, top: 0, backgroundColor}}></Text>);
   }
+  createInitialColorBar(percent, color) {
+    let backgroundColor = color;
+    return (<Text style={{height: '100%', width: '100%', position: 'absolute', left: 0, top: 0, backgroundColor, opacity: .3}}></Text>);
+  }
+
 
   renderPie(dailyMacros) {
     try {
@@ -69,22 +74,26 @@ class MainTracker extends React.Component {
         <View style={styles.macrosContainer}>
           <View style={styles.macro}>
               {this.createColorBar((dailyMacros.protein/goals.protein), globalStyles.proteinColor)}
+              {this.createInitialColorBar((dailyMacros.protein/goals.protein), globalStyles.proteinColor)}
               <Text style={styles.macroHeader}>Protein</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.protein)}/{goals.protein}</Text>
           </View>
           <View style={styles.macro}>
               {this.createColorBar((dailyMacros.carbs/goals.carbs), globalStyles.carbColor)}
+              {this.createInitialColorBar((dailyMacros.carbs/goals.carbs), globalStyles.carbColor)}
               <Text style={styles.macroHeader}>Carbs</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.carbs)}/{goals.carbs}</Text>
           </View>
           <View style={styles.macro}>
               {this.createColorBar((dailyMacros.fat/goals.fat), globalStyles.fatColor)}
+              {this.createInitialColorBar((dailyMacros.fat/goals.fat), globalStyles.fatColor)}
               <Text style={styles.macroHeader}>Fat</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.fat)}/{goals.fat}</Text>
           </View>
         </View>
         <View style={styles.calories}>
               {this.createColorBar((dailyMacros.calories/goals.calories), 'green')}
+              {this.createInitialColorBar((dailyMacros.calories/goals.calories), 'green')}
               <Text style={styles.macroHeader}>Calories</Text>
               <Text style={styles.macroInt}>{Math.round(dailyMacros.calories)}/{goals.calories}</Text>
         </View>
@@ -101,13 +110,14 @@ class MainTracker extends React.Component {
 const styles = StyleSheet.create({
   mainContainer: {
     padding: '2.5%',
+    height: '68.65%'
   },
   macrosContainer: {
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: '5%',
-    marginBottom: '-10%'
+    // marginTop: '5%',
+    marginBottom: '-10%',
   },
   macroHeader: {
     textAlign: 'center',
@@ -123,32 +133,23 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     width: '27.5%',
-    height: '45%',
-    borderRadius: 4,
-    borderWidth: 0.5,
-    borderColor: globalStyles.color,
+    height: '40%',
   },
   calories: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     height: '10%',
-    borderRadius: 4,
-    borderWidth: 0.5,
-    borderColor: globalStyles.color,
   },
   misc: {
-    marginTop: '1%',
+    marginTop: '5%',
+    marginBottom: '-4%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
   pieChart: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    height: '42.5%',
     marginTop: '5%',
   }
 });

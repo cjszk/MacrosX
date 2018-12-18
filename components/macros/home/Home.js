@@ -54,10 +54,8 @@ class Home extends React.Component {
 
 const styles = {
     main: {
-        height: '78%',
-        display: 'flex',
-        justifyContent: 'space-between',
-        flexDirection: 'column'
+        // maxHeight: '77%',
+        justifyContent: 'flex-start',
     }
 }
 

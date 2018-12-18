@@ -47,9 +47,8 @@ class DailyTrackerItem extends React.Component {
 
 const styles = {
     main: {
-        // backgroundColor: 'limegreen',
         borderWidth: 0.5,
-        borderColor: globalStyles.color,
+        borderColor: globalStyles.colors.four,
         padding: '1%',
     },
     flexRow: {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage, Text, View, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icon } from 'react-native-elements';
 import { toggleTab } from '../../../actions/appState';
 import globalStyles from '../../../globalStyles';
@@ -51,14 +52,16 @@ class NewItem extends React.Component {
         }
     }
 
+    handleParseInt = (macro) => parseInt(macro) ? parseInt(macro) : 0;
+    
     handleSubmit = async () => {
         let { name, measurement } = this.state;
         const { date, item } = this.props;
         if (!name.length) return alert('Please name this item');
         if (!measurement.length) return alert('Please give a measurement type: Example: grams, ml');
         let { protein, carbs, fat, fiber, sugar, servingSize } = this.state;
-        protein = parseInt(protein); carbs = parseInt(carbs); fat = parseInt(fat);
-        fiber = parseInt(fiber); sugar = parseInt(sugar); servingSize = parseInt(servingSize);
+        protein = this.handleParseInt(protein); carbs = this.handleParseInt(carbs); fat = this.handleParseInt(fat);
+        fiber = this.handleParseInt(fiber); sugar = this.handleParseInt(sugar); servingSize = this.handleParseInt(servingSize);
         const { data } = this.props;
         const newEntry = { name, protein, carbs, fat, fiber, sugar, servingSize, measurement, date };
         const newEntries = data.library.slice();
@@ -79,7 +82,7 @@ class NewItem extends React.Component {
         const { name, servingSize, measurement } = this.state;
         return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.main}>
+            <KeyboardAwareScrollView style={styles.main} extraScrollHeight={100}>
                 <View style={styles.mainContainer}>
                     <Text style={styles.header}>{name}</Text>
                     <View style={styles.nameView}>
@@ -124,14 +127,14 @@ class NewItem extends React.Component {
                         <Text style={styles.submitText}>Enter</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </KeyboardAwareScrollView>
         </TouchableWithoutFeedback>
         )
     }
 }
 const styles = {
     main: {
-        height: '78%',
+        height: '100%',
     },
     mainContainer: {
         display: 'flex',
@@ -141,7 +144,6 @@ const styles = {
         marginRight: '10%',
         marginTop: 10,
         padding: 10,
-        height: '30%'
     },
     header: {
         fontSize: 32,
@@ -248,7 +250,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginTop: 60,
+        marginTop: '2%',
     },
     submit: {
         padding: 20,

@@ -1,7 +1,7 @@
-const macroCalors = {
-    protein: '#F78888',
-    fat: '#F3D250',
-    carbs: '#90CCF4',
+const macroColors = {
+    protein: '#D66',
+    fat: '#DA4',
+    carbs: '#59B',
 }
 
 const colors =  {
@@ -31,9 +31,9 @@ export default globalStyles = {
     color: '#000',
     backgroundColor: colors.three,
     // Because of pie chart, must use only colors by #XXXXXX
-    proteinColor: macroCalors.protein,
-    carbColor: macroCalors.carbs,
-    fatColor: macroCalors.fat,
+    proteinColor: macroColors.protein,
+    carbColor: macroColors.carbs,
+    fatColor: macroColors.fat,
     //
     menuColor: {
         macros: colors.five,

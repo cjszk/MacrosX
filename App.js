@@ -32,18 +32,19 @@ export default class App extends React.Component {
         <View style={styles.mainContainer}>
           <Header/>
           <HomeSwitch/>
-          <Footer/>
         </View>
+        <Footer/>
       </Provider>
     );
   }
 }
 const styles = StyleSheet.create({
   mainContainer: {
-    height: '100%',
+    height: '89%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     backgroundColor: globalStyles.backgroundColor
   },
+
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage, Text, TouchableWithoutFeedback, View, TouchableOpacity, TextInput, Keyboard } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { toggleTab } from '../../../actions/appState';
 import globalStyles from '../../../globalStyles';
 
@@ -39,15 +40,18 @@ class QuickAdd extends React.Component {
         )
     }
 
+    handleParseInt = (macro) => parseInt(macro) ? parseInt(macro) : 0;
+
     handleSubmit = async () => {
         let { name, measurement } = this.state;
         let { date } = this.props;
         if (!name.length) name = 'Quick Added Item';
         if (!measurement.length) measurement = 'servings';
         let { protein, carbs, fat, fiber, sugar, servings, servingSize } = this.state;
+        if (!servings) return alert('Please enter the amount of servings to be consumed.')
         const { data } = this.props;
-        protein = parseInt(protein); carbs = parseInt(carbs); fat = parseInt(fat);
-        fiber = parseInt(fiber); sugar = parseInt(sugar); servings = parseInt(servings); servingSize = parseInt(servingSize);
+        protein = this.handleParseInt(protein); carbs = this.handleParseInt(carbs); fat = this.handleParseInt(fat);
+        fiber = this.handleParseInt(fiber); sugar = this.handleParseInt(sugar); servings = this.handleParseInt(servings); servingSize = this.handleParseInt(servingSize);
         const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement, date, servingSize };
         // Copy of data.entries - add new entry
         const newEntries = data.entries.slice();
@@ -67,7 +71,7 @@ class QuickAdd extends React.Component {
         const { name, protein, carbs, fat, fiber, sugar, servings, measurement, servingSize } = this.state;
         return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.main}>
+            <KeyboardAwareScrollView style={styles.main} extraScrollHeight={100}>
                 <View style={styles.mainContainer}>
                     <Text style={styles.header}>Quick Add</Text>
                     <View style={styles.nameView}>
@@ -120,14 +124,14 @@ class QuickAdd extends React.Component {
                 <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit()}>
                     <Text style={styles.submitText}>Enter</Text>
                 </TouchableOpacity>
-            </View>
+            </KeyboardAwareScrollView>
         </TouchableWithoutFeedback>
         )
     }
 }
 const styles = {
     main: {
-        height: '78%',
+        height: '100%',
     },
     mainContainer: {
         display: 'flex',
@@ -135,9 +139,8 @@ const styles = {
         justifyContent: 'space-between',
         marginLeft: '10%',
         marginRight: '10%',
-        marginTop: 10,
+        marginTop: '1%',
         padding: 10,
-        height: '30%'
     },
     header: {
         fontSize: 32,
@@ -253,7 +256,7 @@ const styles = {
     submit: {
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: 60,
+        // marginTop: '2%',
         padding: 20,
         borderRadius: 4,
         borderWidth: 0.5,

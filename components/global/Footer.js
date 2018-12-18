@@ -118,6 +118,7 @@ class Footer extends React.Component {
 const styles = StyleSheet.create({
     main: {
         height: '11%',
+        position: 'absolute',
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'row',

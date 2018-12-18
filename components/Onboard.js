@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage, View, TouchableOpacity, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { toggleTab } from '../actions/appState';
 import { saveData } from '../actions/data';
 
@@ -177,14 +178,14 @@ class Goals extends React.Component {
         if (this.state.selected === 'By Calories') renderMenu = this.renderByCalories();
         return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.main}>
+            <KeyboardAwareScrollView extraScrollHeight={100} style={styles.main}>
                 <Text style={styles.header}>Set Goals</Text>
                 {this.renderButtons()}
                 {renderMenu}
                 <TouchableOpacity style={styles.submit} onPress={() => this.handleSubmit()}>
                     <Text style={styles.submitText}>Let's get Started!</Text>
                 </TouchableOpacity>
-            </View>
+            </KeyboardAwareScrollView>
         </TouchableWithoutFeedback>
         );
     }
@@ -194,11 +195,12 @@ const styles = {
     main: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-around',
+        height: '100%'
     },
     header: {
         textAlign: 'center',
         fontSize: 32,
+        marginTop: '5%',
         marginBottom: '5%',
     },
     buttonView: {

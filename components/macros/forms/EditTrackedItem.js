@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage, Text, View, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { toggleTab } from '../../../actions/appState';
 import globalStyles from '../../../globalStyles';
 
@@ -46,12 +47,14 @@ class AddItem extends React.Component {
         }
     }
 
+    handleParseInt = (macro) => parseInt(macro) ? parseInt(macro) : 0;
+
     handleSubmit = async () => {
         const { item, date, data } = this.props;
         const { servings } = this.state;
         let { protein, carbs, fat, fiber, sugar, measurement, name, servingSize } = item;
-        protein = parseInt(protein); carbs = parseInt(carbs); fat = parseInt(fat);
-        fiber = parseInt(fiber); sugar = parseInt(sugar); servingSize = parseInt(servingSize);
+        protein = this.handleParseInt(protein); carbs = this.handleParseInt(carbs); fat = this.handleParseInt(fat);
+        fiber = this.handleParseInt(fiber); sugar = this.handleParseInt(sugar); servingSize = this.handleParseInt(servingSize);
         const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement, date, servingSize };
         let newData = data;
         const newEntries = newData.entries.map((i) => {
@@ -74,7 +77,7 @@ class AddItem extends React.Component {
 
         return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.main}>
+            <KeyboardAwareScrollView style={styles.main} extraScrollHeight={100}>
                 <View style={styles.mainContainer}>
                     <Text style={styles.header}>{name}</Text>
                 </View>
@@ -105,14 +108,14 @@ class AddItem extends React.Component {
                         <Text style={styles.submitText}>Enter</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </KeyboardAwareScrollView>
         </TouchableWithoutFeedback>
         )
     }
 }
 const styles = {
     main: {
-        height: '78%',
+        height: '100%',
     },
     mainContainer: {
         display: 'flex',
@@ -122,7 +125,6 @@ const styles = {
         marginRight: '10%',
         marginTop: 10,
         padding: 10,
-        height: '30%'
     },
     header: {
         fontSize: 32,
@@ -189,7 +191,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginTop: 60,
+        marginTop: '2%',
     },
     submit: {
         padding: 20,
