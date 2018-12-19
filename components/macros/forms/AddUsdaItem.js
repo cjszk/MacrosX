@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage, StyleSheet, Text, View, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback, Picker } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { toggleTab } from '../../../actions/appState';
 import globalStyles from '../../../globalStyles';
 
@@ -29,7 +28,7 @@ class AddItem extends React.Component {
         return (
         <View style={styles.macro}>
             <Text style={styles.macroText}>{title}</Text>
-            <Text style={[styles.macroInt, color]}>{amount}</Text>
+            <Text style={[styles.macroInt, {color}]}>{amount}</Text>
         </View>
         )
     }
@@ -95,7 +94,7 @@ class AddItem extends React.Component {
 
         return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <KeyboardAwareScrollView style={styles.main} extraScrollHeight={100}>
+            <View style={styles.main}>
                 <View style={styles.mainContainer}>
                     <Text style={styles.header}>{item.desc.name}</Text>
                 </View>
@@ -132,7 +131,7 @@ class AddItem extends React.Component {
                 <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit(protein, carbs, fat, fiber, sugar)}>
                     <Text style={styles.submitText}>Enter</Text>
                 </TouchableOpacity>
-            </KeyboardAwareScrollView>
+            </View>
         </TouchableWithoutFeedback>
         )
     }
@@ -151,13 +150,15 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     header: {
-        fontSize: 24,
+        fontSize: 18,
         width: '100%',
         alignSelf: 'center',
-        marginBottom: '-25%',
     },
     picker: {
-        marginBottom: '-15%',
+        marginBottom: '-13.5%',
+        marginTop: '-13.5%',
+        // height: '20%',
+        zIndex: -5,
     }, 
     nutrientsContainer: {
         display: 'flex',
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 10,
         width: 60,
-        height: 40,
+        height: 35,
         textAlign: 'center',
     },
     servingsContainer: {
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
     submit: {
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: '2%',
+        // marginTop: '2%',
         padding: 20,
         borderRadius: 4,
         borderWidth: 0.5,

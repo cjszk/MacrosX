@@ -34,7 +34,7 @@ class DailyTracker extends React.Component {
 const styles = StyleSheet.create({
     main: {
         // position: 'absolute',
-        height: '25.2%',
+        height: '26.5%',
         // bottom: '7.65%',
         // left: 0,
     },

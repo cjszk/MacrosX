@@ -23,7 +23,7 @@ class USDAItem extends React.Component {
         return (
             <View key={item.date} style={styles.main}>
                 <View style={styles.name}>
-                    <Text style={styles.nameText}>{name.split('').slice(0, 40).join('')}</Text>
+                    <Text style={styles.nameText}>{name.length > 50 ? name.split('').slice(0, 50).join('') + '...': name}</Text>
                     <Text style={styles.servingSizeText}>per 100 {measurement}</Text>
                 </View>
                 <View style={styles.macros}>

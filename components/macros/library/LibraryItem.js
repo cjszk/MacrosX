@@ -12,7 +12,7 @@ class LibraryItem extends React.Component {
         return (
             <View key={item.date} style={styles.main}>
                 <View style={styles.name}>
-                    <Text style={styles.nameText}>{item.name}</Text>
+                    <Text style={styles.nameText}>{item.name.length > 30 ? item.name.split('').slice(0, 30).join('') + '...': item.name}</Text>
                     <Text style={styles.servingSizeText}>{item.servingSize} {item.measurement}</Text>
                 </View>
                 <View style={styles.macros}>

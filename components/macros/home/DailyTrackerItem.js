@@ -13,7 +13,7 @@ class DailyTrackerItem extends React.Component {
         return (
             <View style={[styles.flexRow, styles.main]}>
                 <View style={styles.name}>
-                    <Text style={styles.textName}>{item.name}</Text>
+                    <Text style={styles.textName}>{item.name.length > 50 ? item.name.split('').slice(0, 50).join('') + '...': item.name}</Text>
                     <Text style={styles.textServings}>{item.servings * item.servingSize} {item.measurement}</Text>
                 </View>
                 <View style={[styles.flexRow, styles.macros]}>
@@ -64,7 +64,7 @@ const styles = {
         width: '40%',
     },
     textName: {
-        fontSize: 16,
+        fontSize: 14,
         marginBottom: '1%',
         marginTop: '1%',
     },
@@ -73,6 +73,7 @@ const styles = {
         marginTop: '1%',
         marginLeft: '5%',
         marginRight: '5%',
+        fontSize: 12
     },
     macros: {
         justifyContent: 'center',
