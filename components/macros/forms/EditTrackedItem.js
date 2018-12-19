@@ -24,10 +24,11 @@ class AddItem extends React.Component {
     renderNutrient(macro, key, color='#000') {
         const title = key.split('')[0].toUpperCase() + key.split('').slice(1).join('');
         const { servings } = this.state;
+        const amount = Number(parseInt(macro * servings)) ? String(parseInt(macro * servings)) : 0;
         return (
         <View style={styles.macro}>
             <Text style={styles.macroText}>{title}</Text>
-            <Text style={[styles.macroInt, {color}]}>{String(parseInt(macro * servings))}</Text>
+            <Text style={[styles.macroInt, {color}]}>{amount}</Text>
         </View>
         );
     }
@@ -73,7 +74,8 @@ class AddItem extends React.Component {
     render() {
         const { servings } = this.state;
         const { item } = this.props;
-        const { protein, carbs, fat, fiber, sugar, measurement, name } = item;
+        const { protein, carbs, fat, fiber, sugar, measurement, name, servingSize } = item;
+        const renderServingSize = servings? parseInt(servings * servingSize * 10)/10 : 0;
 
         return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -90,7 +92,7 @@ class AddItem extends React.Component {
                         keyboardType='numeric'
                         onChangeText={(s) => this.setState({servings: s})}
                     />
-                    <Text style={styles.measurement}>{measurement}</Text>
+                    <Text style={styles.measurement}>{Number(parseInt(renderServingSize*10)/10) ? String(parseInt(renderServingSize*10)/10) : '0'} {measurement}</Text>
                 </View>
                 <View style={styles.nutrientsContainer}>
                     <View style={styles.macroContainer}>

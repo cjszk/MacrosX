@@ -25,35 +25,41 @@ class AddItem extends React.Component {
         const title = key.split('')[0].toUpperCase() + key.split('').slice(1).join('');
         let { servings } = this.state;
         if (!servings) servings = 0;
+        const amount = Number(parseInt(macro * servings)) ? String(parseInt(macro * servings)) : 0;
         return (
         <View style={styles.macro}>
             <Text style={styles.macroText}>{title}</Text>
-            <Text style={[styles.macroInt, color]}>{String(parseInt(macro * servings))}</Text>
+            <Text style={[styles.macroInt, color]}>{amount}</Text>
         </View>
         )
     }
 
     handleParseInt = (macro) => parseInt(macro) ? parseInt(macro) : 0;
 
-    handleSubmit = async () => {
-        // const { item, date, data } = this.props;
-        // const { servings } = this.state;
-        // let { protein, carbs, fat, fiber, sugar, measurement, name, servingSize } = item;
-        // protein = this.handleParseInt(protein); carbs = this.handleParseInt(carbs); fat = this.handleParseInt(fat);
-        // fiber = this.handleParseInt(fiber); sugar = this.handleParseInt(sugar); servingSize = this.handleParseInt(servingSize);
-        // const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement, date, servingSize };
-        // // Copy of data.entries - add new entry
-        // const newEntries = data.entries.slice();
-        // newEntries.push(newEntry);
-        // // Copy of data - replace with new entries
-        // let newData = data;
-        // newData.entries = newEntries;
-        // try {
-        //   await AsyncStorage.setItem('data', JSON.stringify(newData));
-        //   this.props.dispatch(toggleTab('home'))
-        // } catch (error) {
-        //   console.error(error);
-        // }
+    handleSubmit = async (protein, carbs, fat, fiber, sugar) => {
+        const { item, date, data } = this.props;
+        const { servings, measurement } = this.state;
+        let { servingSize } = this.state;
+        const name = item.desc.name;
+        protein = this.handleParseInt(protein); carbs = this.handleParseInt(carbs); fat = this.handleParseInt(fat);
+        fiber = this.handleParseInt(fiber); sugar = this.handleParseInt(sugar); servingSize = this.handleParseInt(servingSize);
+        const newEntry = { name, protein, carbs, fat, fiber, sugar, servings, measurement, date, servingSize };
+        const newLibraryEntry = { name, protein, carbs, fat, fiber, sugar, date, servingSize, measurement }
+        // Copy of data.entries - add new entry
+        const newEntries = data.entries.slice();
+        const newLibraryEntries = data.library.slice();
+        newEntries.push(newEntry);
+        newLibraryEntries.push(newLibraryEntry);
+        // Copy of data - replace with new entries
+        let newData = data;
+        newData.entries = newEntries;
+        newData.library = newLibraryEntries;
+        try {
+          await AsyncStorage.setItem('data', JSON.stringify(newData));
+          this.props.dispatch(toggleTab('home'))
+        } catch (error) {
+          console.error(error);
+        }
     }
 
     componentDidMount() {
@@ -72,7 +78,7 @@ class AddItem extends React.Component {
     renderMeasurements() {
         const { nutrients } = this.state;
         return nutrients[0].measures.map((m) => 
-                <Picker.Item key={`${m.qty} ${m.label}`} label={`${m.qty} ${m.label}`} value={`${m.qty} ${m.label} ${m.eqv}`}/>
+                <Picker.Item key={`${m.qty} ${m.label}`} label={`${m.qty} ${m.label}`} value={`${m.qty} ${m.label.split(' ').join('-')} ${m.eqv}`}/>
         );
     }
 
@@ -93,9 +99,11 @@ class AddItem extends React.Component {
                 <View style={styles.mainContainer}>
                     <Text style={styles.header}>{item.desc.name}</Text>
                 </View>
-                <Picker selectedValue={selected} 
-                onValueChange={(itemValue, nutrientIndex) => 
-                    this.setState({selected: itemValue, servingSize: itemValue.split(' ')[0], measurement: itemValue.split(' ')[1], equivalent: itemValue.split(' ')[2], nutrientIndex})}>
+                <Picker style={styles.picker} selectedValue={selected} 
+                onValueChange={(itemValue, nutrientIndex) => {
+                    this.setState({selected: itemValue, servingSize: itemValue.split(' ')[0], measurement: itemValue.split(' ')[1], equivalent: itemValue.split(' ')[2], nutrientIndex})}
+                }
+                    >
                     {this.renderMeasurements()}
                     <Picker.Item key="100 grams" label="100 grams" value="100 grams 100"/>
                 </Picker>
@@ -110,7 +118,7 @@ class AddItem extends React.Component {
                         maxLength={4}
                         onChangeText={(s) => this.setState({servings: s})}
                     />
-                    <Text style={styles.measurement}>{renderServingSize} {measurement}</Text>
+                    <Text style={styles.measurement}>{Number(parseInt(renderServingSize*10)/10) ? String(parseInt(renderServingSize*10)/10) : '0'} {measurement.split('-').join(' ')}</Text>
                 </View>
                 <View style={styles.nutrientsContainer}>
                     <View style={styles.macroContainer}>
@@ -121,7 +129,7 @@ class AddItem extends React.Component {
                         {this.renderNutrient(sugar, 'sugar')}
                     </View>
                 </View>
-                <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit()}>
+                <TouchableOpacity style={styles.submit}onPress={() => this.handleSubmit(protein, carbs, fat, fiber, sugar)}>
                     <Text style={styles.submitText}>Enter</Text>
                 </TouchableOpacity>
             </KeyboardAwareScrollView>
@@ -143,20 +151,25 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     header: {
-        fontSize: 32,
-        alignSelf: 'center'
+        fontSize: 24,
+        width: '100%',
+        alignSelf: 'center',
+        marginBottom: '-25%',
     },
+    picker: {
+        marginBottom: '-15%',
+    }, 
     nutrientsContainer: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
-        padding: 10,
+        // padding: 10,
     },
     macroContainer: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
-        padding: 10,
+        // padding: 10,
     },
     macro: {
         display: 'flex',

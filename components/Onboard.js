@@ -202,7 +202,6 @@ class Goals extends React.Component {
             let newData = data;
             newData.goals = newGoals;
             try {
-              console.log('this ran')
               await AsyncStorage.setItem('data', JSON.stringify(newData)).then(() => this.props.dispatch(saveData(newData)));
               this.props.dispatch(toggleTab('home'))
             } catch (error) {

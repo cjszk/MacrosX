@@ -24,7 +24,7 @@ class USDAItem extends React.Component {
             <View key={item.date} style={styles.main}>
                 <View style={styles.name}>
                     <Text style={styles.nameText}>{name.split('').slice(0, 40).join('')}</Text>
-                    <Text style={styles.servingSizeText}>100 {measurement}</Text>
+                    <Text style={styles.servingSizeText}>per 100 {measurement}</Text>
                 </View>
                 <View style={styles.macros}>
                     <Text style={[styles.macronutrient, {
@@ -63,6 +63,7 @@ const styles = {
         height: 60,
         borderWidth: 0.5,
         borderColor: globalStyles.colors.four,
+        backgroundColor: '#ddd',
     },
     name: {
         width: '52.5%',

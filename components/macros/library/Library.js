@@ -7,7 +7,7 @@ import LibraryItem from './LibraryItem';
 import USDAItem from './usdaItem';
 import { toggleTab } from '../../../actions/appState';
 
-const API_KEY;
+// const API_KEY = process.env.REACT_APP_USDA_API_KEY;
 
 class Library extends React.Component {
 
@@ -18,20 +18,21 @@ class Library extends React.Component {
             apiSearchItems: [],
             apiSearchItemsInfo: [],
             failedSearch: false,
-            loading: false
+            loading: false,
+            searchCount: 0,
         }
         this.timeout;
 
     }
 
     search(searchQuery) {
-        this.setState({searchQuery, apiSearchItemsInfo: [], failedSearch: false})
+        this.setState({searchQuery, apiSearchItemsInfo: [], failedSearch: false});
         if (searchQuery.length < 2) return null;
         if (this.timeout) clearInterval(this.timeout);
         const database = 'Standard+Reference';
-        const searchUrl = `https://api.nal.usda.gov/ndb/search/?format=json&max=25&q=${searchQuery}&ds=${database}&api_key=${API_KEY}`;
+        const searchUrl = `https://api.nal.usda.gov/ndb/search/?format=json&q=${searchQuery}&ds=${database}&api_key=${API_KEY}`;
         this.timeout = setTimeout(() => {
-            this.setState({loading: true})
+            this.setState({loading: true});
             fetch(searchUrl, {
                 method: "GET",
               }).then((res) => {
@@ -46,28 +47,65 @@ class Library extends React.Component {
               }).then((items)=> {
                 if (!items) return null;
                 let urlString = 'https://api.nal.usda.gov/ndb/V2/reports?';
-                items.forEach((item) => urlString += `ndbno=${item.ndbno}&`);
+                const count = items.length > 25 ? 25 : items.length;
+                let searchCount = 0;
+                for (let i=0; i<count; i++) {
+                    urlString += `ndbno=${items[i].ndbno}&`;
+                    searchCount++;
+                }
                 urlString += `type=f&format=json&api_key=${API_KEY}`;
                 return fetch(urlString, {
                     method: "GET",
                     }).then((res) => {
                         return res.json();
                     }).then((results) => {
-                        this.setState({apiSearchItemsInfo: results.foods, loading: false})
+                        this.setState({apiSearchItemsInfo: results.foods, loading: false, searchCount})
                     }).catch((err) => console.error(err));
               }).catch((err) => console.error(err));
         }, 1500);
     }
 
+    reachedBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+        const { searchCount, apiSearchItems } = this.state;
+        if (searchCount >= apiSearchItems.length) return null;
+        return layoutMeasurement.height + contentOffset.y >=
+          contentSize.height;
+      };
+
+    loadMore() {
+        const { apiSearchItems, searchCount } = this.state;
+        if (!apiSearchItems) return null;
+        this.setState({failedSearch: false, loading: true});
+        let urlString = 'https://api.nal.usda.gov/ndb/V2/reports?';
+        let maxIndex = apiSearchItems.length > searchCount + 25 ? searchCount + 25 : apiSearchItems.length;
+        let count = searchCount;
+        for (let i=searchCount; i<maxIndex; i++) {
+            urlString += `ndbno=${apiSearchItems[i].ndbno}&`;
+            count++;
+        }
+        urlString += `type=f&format=json&api_key=${API_KEY}`;
+        return fetch(urlString, {
+            method: "GET",
+            }).then((res) => {
+                return res.json();
+            }).then((results) => {
+                this.setState(prevState => ({
+                    apiSearchItemsInfo: [...prevState.apiSearchItemsInfo, ...results.foods],
+                    loading: false,
+                    searchCount: count
+                }));
+            }).catch((err) => console.error(err));
+    }
+
     renderSearchItems() {
         const items = this.state.apiSearchItemsInfo;
         if (!items || items.length === 0) {
-            return <View/>
+            return <View/>;
         };
-        return items.filter((item) => item.food.nutrients[0].measures.length !== 0).map((item) => {
+        return items.filter((item) => item.food.nutrients[0].measures.length !== 0).map((item, index) => {
             return (
-                <USDAItem key={item.food.desc.ndbno} item={item.food} />
-            )
+                <USDAItem key={index} item={item.food} />
+            );
         });
     }
     
@@ -88,10 +126,16 @@ class Library extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.list}>
-                    <ScrollView>
+                    <ScrollView
+                        onScroll={({nativeEvent}) => {
+                            if (this.reachedBottom(nativeEvent)) {
+                            this.loadMore();
+                            }
+                        }}
+                          scrollEventThrottle={400}>
                         {listItems}
-                        {renderLoading}
                         {failedSearch ? <Text style={styles.loading}>No search results!</Text> : this.renderSearchItems()}
+                        {renderLoading}
                     </ScrollView>
                 </View>
             </View>
@@ -113,7 +157,8 @@ const styles = {
         padding: 7.5
     },
     controls: {
-        marginTop: 20,
+        marginTop: 10,
+        marginBottom: 10,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
@@ -131,7 +176,12 @@ const styles = {
         height: '39.5%'
     },
     loading: {
+        // position: 'absolute',
+        // bottom: 500,
+        // left: '50%',
+        // right: '50%',
         textAlign: 'center',
+        height: 200,
         width: '100%'
     }
 }

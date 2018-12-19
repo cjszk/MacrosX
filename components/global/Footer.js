@@ -43,12 +43,12 @@ class Footer extends React.Component {
                         // When we have more setting windows, use this below.
                         // action: () => this.props.dispatch(toggleTab('settings')),
                     },
-                    {
-                        name: 'Workouts',
-                        icon: 'fitness-center',
-                        type: 'MaterialIcons',
-                        action: () => this.props.dispatch(toggleMode('workouts')),
-                    },
+                    // {
+                    //     name: 'Workouts',
+                    //     icon: 'fitness-center',
+                    //     type: 'MaterialIcons',
+                    //     action: () => this.props.dispatch(toggleMode('workouts')),
+                    // },
                     ],
                 workouts: [
                     {
@@ -132,7 +132,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'column',
         alignItems: 'center',
-        width: '20%',
+        // width: '20%',
+        width: '25%',
     },
     itemIcon: {
 

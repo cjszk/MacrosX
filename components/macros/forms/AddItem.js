@@ -23,10 +23,11 @@ class AddItem extends React.Component {
     renderNutrient(macro, key, color='#000') {
         const title = key.split('')[0].toUpperCase() + key.split('').slice(1).join('');
         const { servings } = this.state;
+        const amount = Number(parseInt(macro * servings)) ? String(parseInt(macro * servings)) : 0;
         return (
         <View style={styles.macro}>
             <Text style={styles.macroText}>{title}</Text>
-            <Text style={[styles.macroInt, color]}>{String(parseInt(macro * servings))}</Text>
+            <Text style={[styles.macroInt, color]}>{amount}</Text>
         </View>
         )
     }
@@ -76,7 +77,7 @@ class AddItem extends React.Component {
                         maxLength={4}
                         onChangeText={(s) => this.setState({servings: s})}
                     />
-                    <Text style={styles.measurement}>{servingSize * servings} {measurement}</Text>
+                    <Text style={styles.measurement}>{Number(parseInt(servingSize * servings*10)/10) ? String(parseInt(servingSize * servings*10)/10) : '0'} {measurement}</Text>
                 </View>
                 <View style={styles.nutrientsContainer}>
                     <View style={styles.macroContainer}>
